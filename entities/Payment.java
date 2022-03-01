@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,6 +27,10 @@ public class Payment {
 	private float RemainingPremium;
 	private float RefundAmount;
 	private boolean Status;
+	@OneToOne (mappedBy = "payment")
+	private Contract contract; 
+	
+	
 	public int getIDPayment() {
 		return IDPayment;
 	}
@@ -73,6 +78,10 @@ public class Payment {
 	}
 	public void setStatus(boolean status) {
 		Status = status;
+	}
+	public Payment() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	
 }

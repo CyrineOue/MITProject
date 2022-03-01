@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +30,10 @@ public class Contract {
 	private float NetPremium;
 	private float TTCPremium;
 	private float CellingAmount;
+	@ManyToOne
+	private Product coproduct;
+	@OneToOne
+	private Payment payment;
 	public Long getIDContract() {
 		return IDContract;
 	}
@@ -75,6 +81,10 @@ public class Contract {
 	}
 	public void setCellingAmount(float cellingAmount) {
 		CellingAmount = cellingAmount;
+	}
+	public Contract() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	
 }
