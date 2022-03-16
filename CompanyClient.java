@@ -1,12 +1,17 @@
 package tn.MITProject.entities;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity 
@@ -16,24 +21,33 @@ public class CompanyClient {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="idClientC")
 	private long idClientC;
-	private String passwordC;
-	private String activityArea;
 	private String brand;
+	private String passwordC;
+	@Enumerated
+	private Area activityArea;
 	private Date creationDate;
-	private long fax;
 	private String email;
 	private int employeesNb ;
+	private Long capital;
 	private int nbDeclaredSinistersC;
+	private boolean archived=false;
+	private final LocalDate sbuscriptionDate = LocalDate.now();
+	@ManyToMany (mappedBy = "companyClient")
+	private Set<Product> products;
+	@OneToMany (mappedBy = "sinCompanyClient")
+	private Set<Sinister> sinisters;
+	
+	//Getters & Setters 
 	public String getPasswordC() {
 		return passwordC;
 	}
 	public void setPasswordC(String passwordC) {
 		this.passwordC = passwordC;
 	}
-	public String getActivityArea() {
+	public Area getArea() {
 		return activityArea;
 	}
-	public void setActivityArea(String activityArea) {
+	public void setArea(Area activityArea) {
 		this.activityArea = activityArea;
 	}
 	public String getBrand() {
@@ -48,12 +62,7 @@ public class CompanyClient {
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
-	public long getFax() {
-		return fax;
-	}
-	public void setFax(long fax) {
-		this.fax = fax;
-	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -72,7 +81,41 @@ public class CompanyClient {
 	public void setNbDeclaredSinistersC(int nbDeclaredSinistersC) {
 		this.nbDeclaredSinistersC = nbDeclaredSinistersC;
 	}
+
+	public Long getCapital() {
+		return capital;
+	}
+	public void setCapital(Long capital) {
+		this.capital = capital;
+	}
 	
+	//Constructors
+	public CompanyClient() {
+
+	}
+	public CompanyClient( String passwordC, Area activityArea, String brand, Date creationDate,
+			 String email, int employeesNb, Long capital, int nbDeclaredSinistersC) {	
+		this.brand = brand;
+		this.passwordC = passwordC;
+		this.activityArea = activityArea;
+		
+		this.creationDate = creationDate;
+
+		this.email = email;
+		this.employeesNb = employeesNb;
+		this.capital = capital;
+		this.nbDeclaredSinistersC = nbDeclaredSinistersC;
+
+	}
+	public boolean isArchived() {
+		return archived;
+	}
+	public void setArchived(boolean archived) {
+		this.archived = archived;
+	}
+	public LocalDate getSbuscriptionDate() {
+		return sbuscriptionDate;
+	}
 
 
 }

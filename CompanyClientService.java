@@ -1,20 +1,33 @@
-package tn.MITProject.services;
+package tn.MITProject.Service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import tn.MITProject.entities.CompanyClient;
-@Repository
+
+
 public interface CompanyClientService {
 	List<CompanyClient> retrieveAllCompanyClients();
 
-	CompanyClient addStock(CompanyClient cc);
+	CompanyClient addCompanyClient (CompanyClient cc);
 
-	void deleteCompanyClient (Long id);
+	void removeCompanyClient (Long id);
 
 	CompanyClient updateCompanyClient (CompanyClient cc);
 
 	CompanyClient retrieveCompanyClient (Long id);
+	
+	float EvaluateSeniority (Long idClient);
+	
+	float EvaluateCapital (Long idClient);
+	
+	float EvaluateEmployeesNb (Long idClient);
+	
+	float EvaluateArea (Long idClient);
+	
+	float scoreCompanyClient(Long id);
+	
+	int CategoriyCompanyClient(Long idClient); 
+	
 
+	
 }

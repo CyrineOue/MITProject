@@ -1,17 +1,27 @@
-package tn.MITProject.services;
+package tn.MITProject.Service;
 
 import java.util.List;
 
 import tn.MITProject.entities.ParticularClient;
 
+
+
 public interface ParticularClientService {
 	List<ParticularClient> retrieveAllParticularClients();
 
-	ParticularClient addStock(ParticularClient pc);
+	ParticularClient addParticularClient (ParticularClient cc);
 
-	void deleteParticularClient (Long id);
+	void removeParticularClient (Long id);
 
-	ParticularClient updateParticularClient (ParticularClient pc);
+	ParticularClient updateParticularClient (ParticularClient pc  );
 
 	ParticularClient retrieveParticularClient (Long id);
+	
+	float EvaluateSeniority(Long idClient);
+	
+	float EvaluateArea (Long idClient);
+	
+	float scoreParticularClient(Long idClient);
+	
+	int CategoriyParticularClient (Long idClient );
 }
