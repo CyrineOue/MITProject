@@ -1,12 +1,15 @@
 package tn.MITProject.entities;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity 
@@ -24,6 +27,11 @@ public class CompanyClient {
 	private String email;
 	private int employeesNb ;
 	private int nbDeclaredSinistersC;
+	@ManyToMany (mappedBy = "companyClient")
+	private Set<Product> products;
+	@OneToMany (mappedBy = "sinCompanyClient")
+	private Set<Sinister> sinisters;
+	
 	public String getPasswordC() {
 		return passwordC;
 	}
@@ -71,6 +79,10 @@ public class CompanyClient {
 	}
 	public void setNbDeclaredSinistersC(int nbDeclaredSinistersC) {
 		this.nbDeclaredSinistersC = nbDeclaredSinistersC;
+	}
+	public CompanyClient() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	
 
