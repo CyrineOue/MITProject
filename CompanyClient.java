@@ -27,8 +27,11 @@ public class CompanyClient {
 	private String email;
 	private int employeesNb ;
 	private int nbDeclaredSinistersC;
+	
+	
 	@ManyToMany (mappedBy = "companyClient")
 	private Set<Product> products;
+	
 	@OneToMany (mappedBy = "sinCompanyClient")
 	private Set<Sinister> sinisters;
 	
@@ -83,6 +86,24 @@ public class CompanyClient {
 	public CompanyClient() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	public long getIdClientC() {
+		return idClientC;
+	}
+	public void setIdClientC(long idClientC) {
+		this.idClientC = idClientC;
+	}
+	public Set<Product> getProducts() {
+		return products;
+	}
+	public void setProducts(Set<Product> products) {
+		this.products = products;
+	}
+	public Set<Sinister> getSinisters() {
+		return sinisters;
+	}
+	public void setSinisters(Set<Sinister> sinisters) {
+		this.sinisters = sinisters;
 	}
 	
 

@@ -31,8 +31,9 @@ public class ParticularClient {
 	private String email;
 	private int nbDeclaredSinistersP;
 	
-	@ManyToMany(mappedBy = "particularClient")
+	@ManyToMany (mappedBy = "particularClient")
 	private Set<Product> products;
+	
 	@OneToMany (mappedBy = "sinParticularClient")
 	private Set<Sinister> sinisters;
 	

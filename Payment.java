@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,9 +27,8 @@ public class Payment {
 	private float RemainingPremium;
 	private float RefundAmount;
 	private boolean Status;
-
-	@ManyToOne
-	private Contract copayment;
+	@OneToOne (mappedBy = "payment")
+	private Contract contract; 
 	
 	
 	public int getIDPayment() {
@@ -84,12 +83,5 @@ public class Payment {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Contract getCopayment() {
-		return copayment;
-	}
-	public void setCopayment(Contract copayment) {
-		this.copayment = copayment;
-	}
-	
 	
 }

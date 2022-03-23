@@ -1,16 +1,14 @@
 package tn.MITProject.entities;
 
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,13 +29,11 @@ public class Contract {
 	private Date EndDate;
 	private float NetPremium;
 	private float TTCPremium;
-	private float CeillingAmount;
-	@Enumerated
-	private Status Costatus;
+	private float CellingAmount;
 	@ManyToOne
 	private Product coproduct;
-	@OneToMany (mappedBy = "copayment")
-	private Set<Payment> payments;
+	@OneToOne
+	private Payment payment;
 	public Long getIDContract() {
 		return IDContract;
 	}
@@ -80,50 +76,29 @@ public class Contract {
 	public void setTTCPremium(float tTCPremium) {
 		TTCPremium = tTCPremium;
 	}
-
-	public Contract() {
-		super();
-		// TODO Auto-generated constructor stub
+	public float getCellingAmount() {
+		return CellingAmount;
 	}
+	public void setCellingAmount(float cellingAmount) {
+		CellingAmount = cellingAmount;
+	}
+	
+	
 	public Product getCoproduct() {
 		return coproduct;
 	}
 	public void setCoproduct(Product coproduct) {
 		this.coproduct = coproduct;
 	}
-	
-	public Contract(Long iDContract, int iDClient, Date creationDate, Date startDate, Date endDate, float netPremium,
-			float tTCPremium, float cellingAmount, Product coproduct, Payment payment) {
+	public Payment getPayment() {
+		return payment;
+	}
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+	public Contract() {
 		super();
-		IDContract = iDContract;
-		IDClient = iDClient;
-		CreationDate = creationDate;
-		StartDate = startDate;
-		EndDate = endDate;
-		NetPremium = netPremium;
-		TTCPremium = tTCPremium;
-		this.coproduct = coproduct;
-		
+		// TODO Auto-generated constructor stub
 	}
-	public Set<Payment> getPayments() {
-		return payments;
-	}
-	public void setPayments(Set<Payment> payments) {
-		this.payments = payments;
-	}
-	public Status getCostatus() {
-		return Costatus;
-	}
-	public void setCostatus(Status costatus) {
-		Costatus = costatus;
-	}
-	public float getCeillingAmount() {
-		return CeillingAmount;
-	}
-	public void setCeillingAmount(float ceillingAmount) {
-		CeillingAmount = ceillingAmount;
-	}
-	
-	
 	
 }
