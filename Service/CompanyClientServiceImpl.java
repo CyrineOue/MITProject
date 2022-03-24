@@ -4,13 +4,19 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import tn.MITProject.entities.Area;
 import tn.MITProject.entities.CompanyClient;
+import tn.MITProject.entities.Log;
+import tn.MITProject.entities.Role;
 import tn.MITProject.repositories.CompanyClientRepository;
 import tn.MITProject.repositories.ContractRepository;
+import tn.MITProject.repositories.LogRepository;
 
 @Service
 public class CompanyClientServiceImpl implements CompanyClientService
@@ -21,18 +27,31 @@ public class CompanyClientServiceImpl implements CompanyClientService
 	ContractRepository contractRepository; 
 	@Autowired
 	ContractService contractService;
-	
+	@Autowired
+	PaymentService paymentService;
+	@Autowired
+	LogRepository logrepository;
+	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	@Override
 	public List<CompanyClient> retrieveAllCompanyClients() {
 		
 		return (List<CompanyClient>) companyClientRepository.findAll();
 	}
 
-	@Override
-	public CompanyClient addCompanyClient(CompanyClient cc) {
-		return companyClientRepository.save(cc);
+	@Transactional
+	public CompanyClient addCompanyClient(CompanyClient c) {
+		Log log= saveLog(c);
+		c.setLogClientC(log);
+		companyClientRepository.save(c);
+		return c;
 	}
-
+	private Log saveLog(CompanyClient c){
+		Log log=c.getLogClientC();
+		log.setPassword(bCryptPasswordEncoder.encode(c.getLogClientC().getPassword()));
+		log.setRole(Role.COMPANYCLIENT);
+		logrepository.save(log);
+		return log;
+	}
 	@Override
 	public void removeCompanyClient(Long id) {
 		companyClientRepository.deleteById(id);
@@ -43,12 +62,20 @@ public class CompanyClientServiceImpl implements CompanyClientService
 	
 	}
 
-	@Override
-	public CompanyClient updateCompanyClient(CompanyClient cc) {
-		
-		return companyClientRepository.save(cc);
+	@Transactional
+	public CompanyClient updateCompanyClient(CompanyClient c) {
+		Log log= updateLog(c);
+		c.setLogClientC(log);
+		companyClientRepository.save(c);
+		return c;
 	}
-
+	private Log updateLog(CompanyClient c){
+		Log log=c.getLogClientC();
+		log.setPassword(bCryptPasswordEncoder.encode(c.getLogClientC().getPassword()));
+		log.setRole(Role.COMPANYCLIENT);
+		logrepository.save(log);
+		return log;
+	}
 	@Override
 	public CompanyClient retrieveCompanyClient(Long id) {
 		
@@ -99,65 +126,66 @@ public class CompanyClientServiceImpl implements CompanyClientService
 	public float EvaluateArea(Long idClient) {
 		CompanyClient cp= companyClientRepository.findById(idClient).orElse(null);
 		Area ae =cp.getArea();
-		if (ae==Area.Tunis)
+		if (ae==Area.TUNIS)
 			return 0.75f;
-		if (ae==Area.Ariana)
+		if (ae==Area.ARIANA)
 			return 0.72f;
-		if (ae==Area.Monastir)
+		if (ae==Area.MONASTIR)
 			return 0.71f;
-		if (ae==Area.BenArous)
+		if (ae==Area.BENAROUS)
 			return 0.7f;
-		if (ae==Area.Sousse)
+		if (ae==Area.SOUSSE)
 			return 0.67f;
-		if (ae==Area.Nabeul)
+		if (ae==Area.NABEUL)
 			return 0.6f;
-		if (ae==Area.Sfax)
+		if (ae==Area.SFAX)
 			return 0.58f;
-		if (ae==Area.Manouba)
+		if (ae==Area.MANOUBA)
 			return 0.56f;
-		if (ae==Area.Bizerte)
+		if (ae==Area.BIZERTE)
 			return 0.52f;
-		if (ae==Area.Tozeur)
+		if (ae==Area.TOZEUR)
 			return 0.5f;
-		if (ae==Area.Zaghouan)
+		if (ae==Area.ZAGHOUAN)
 			return 0.49f;
-		if (ae==Area.Kebili)
+		if (ae==Area.KEBILI)
 			return 0.45f;
-		if (ae==Area.Gabès)
+		if (ae==Area.GABES)
 			return 0.42f;
-		if (ae==Area.Mahdia)
+		if (ae==Area.MAHDIA)
 			return 0.39f;
-		if (ae==Area.Médenine)
+		if (ae==Area.MEDENINE)
 			return 0.39f;
-		if (ae==Area.Gafsa)
+		if (ae==Area.GAFSA)
 			return 0.38f;
-		if (ae==Area.Béja)
+		if (ae==Area.BEJA)
 			return 0.33f;
-		if (ae==Area.Tataouine)
+		if (ae==Area.TATAOUINE)
 			return 0.3f;
-		if (ae==Area.Kef)
+		if (ae==Area.KEF)
 			return 0.29f;
-		if (ae==Area.SidiBouzid)
+		if (ae==Area.SIDIBOUZID)
 			return 0.27f;
-		if (ae==Area.Siliana)
+		if (ae==Area.SILIANA)
 			return 0.26f;
-		if (ae==Area.Kairouan)
+		if (ae==Area.KAIROUAN)
 			return 0.25f;
-		if (ae==Area.Kasserine)
+		if (ae==Area.KASSERINE)
 			return 0.22f;
-		if (ae==Area.Jendouba)
+		if (ae==Area.JENDOUBA)
 			return 0.22f;
 		return 0;
 	}
 	
 	@Override
 	public float scoreCompanyClient(Long idClient) {
+		
 				return (float) (0.2 *  contractService.EvaluateContractsNb(idClient) 
 						+ 0.2 * contractService.EvaluateClaimsAmount(idClient)+ 0.1 * EvaluateSeniority(idClient) 
 						+0.05*EvaluateCapital(idClient) +0.05* EvaluateEmployeesNb(idClient) 
-						+ 0.3* EvaluateArea(idClient)
+						+ 0.3* EvaluateArea(idClient) + 0.1 *paymentService.OnTimePayment(idClient) 
 						); 
-				//		 + 0.1 *OnTimePaymentsRate 
+				//		 
 			
 	}
 
