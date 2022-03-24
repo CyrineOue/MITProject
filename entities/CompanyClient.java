@@ -1,30 +1,43 @@
 package tn.MITProject.entities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
 @Entity 
-@Table
-public class CompanyClient {
+@Table (name="CompanyClient")
+public class CompanyClient implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="idClientC")
 	private long idClientC;
 	private String brand;
 	private String passwordC;
-	@Enumerated
+	@Enumerated (EnumType.STRING)
 	private Area activityArea;
+    @JsonFormat(shape=Shape.STRING, pattern="dd-MM-yyyy")
 	private Date creationDate;
 	private String email;
 	private int employeesNb ;
@@ -32,6 +45,9 @@ public class CompanyClient {
 	private int nbDeclaredSinistersC;
 	private boolean archived=false;
 	private final LocalDate sbuscriptionDate = LocalDate.now();
+	
+	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
+	private Log logClientC;
 	@ManyToMany (mappedBy = "companyClient")
 	private Set<Product> products;
 	@OneToMany (mappedBy = "sinCompanyClient")
@@ -115,6 +131,24 @@ public class CompanyClient {
 	}
 	public LocalDate getSbuscriptionDate() {
 		return sbuscriptionDate;
+	}
+	public long getIdClientC() {
+		return idClientC;
+	}
+	public void setIdClientC(long idClientC) {
+		this.idClientC = idClientC;
+	}
+	public Area getActivityArea() {
+		return activityArea;
+	}
+	public void setActivityArea(Area activityArea) {
+		this.activityArea = activityArea;
+	}
+	public Log getLogClientC() {
+		return logClientC;
+	}
+	public void setLogClientC(Log logClientC) {
+		this.logClientC = logClientC;
 	}
 
 
