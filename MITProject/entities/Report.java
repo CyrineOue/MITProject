@@ -1,16 +1,21 @@
 package tn.MITProject.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="Report")
-public class Report {
+public class Report implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column(name="idReport")
@@ -18,8 +23,6 @@ public class Report {
 	private long nbContracts;
 	private long nbSinisters;
     private long CAmonth;
-    @ManyToOne
-    private Admin readmin;
 	public long getIdReport() {
 		return idReport;
 	}
@@ -50,10 +53,6 @@ public class Report {
 		this.nbContracts = nbContracts;
 		this.nbSinisters = nbSinisters;
 		CAmonth = cAmonth;
-	}
-	public Report() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
     
     

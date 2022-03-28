@@ -1,38 +1,40 @@
 package tn.MITProject.entities;
 
-import java.util.Set;
+import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
-public class Expert {
+@Table(name="Expert")
+public class Expert implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long idExpert;
-	private String password;
 	private String name;
 	private String lastName;
-	private String email;
 	private long phoneNb;
 	private String expertiseField;
-	@OneToMany (mappedBy = "expert")
-	private Set<Sinister> sinisters; 
+	
+	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
+	private Log logExpert;
+	
 	
 	public long getIdExpert() {
 		return idExpert;
 	}
 	public void setIdExpert(long idExpert) {
 		this.idExpert = idExpert;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public String getName() {
 		return name;
@@ -46,12 +48,6 @@ public class Expert {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	public long getPhoneNb() {
 		return phoneNb;
 	}
@@ -64,14 +60,19 @@ public class Expert {
 	public void setExpertiseField(String expertiseField) {
 		this.expertiseField = expertiseField;
 	}
-	public Expert(long idExpert, String password, String name, String lastName, String email, long phoneNb,
+	public Log getLogExpert() {
+		return logExpert;
+	}
+	public void setLogExpert(Log logExpert) {
+		this.logExpert = logExpert;
+	}
+	
+	public Expert(long idExpert, String name, String lastName,  long phoneNb,
 			String expertiseField) {
 		super();
 		this.idExpert = idExpert;
-		this.password = password;
 		this.name = name;
 		this.lastName = lastName;
-		this.email = email;
 		this.phoneNb = phoneNb;
 		this.expertiseField = expertiseField;
 	}

@@ -1,43 +1,39 @@
 package tn.MITProject.entities;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity 
-@Table
-public class CompanyClient {
+@Table(name="CompanyClient")
+public class CompanyClient implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="idClientC")
 	private long idClientC;
-	private String passwordC;
 	private String activityArea;
 	private String brand;
 	private Date creationDate;
 	private long fax;
-	private String email;
 	private int employeesNb ;
 	private int nbDeclaredSinistersC;
-	@ManyToMany (mappedBy = "companyClient")
-	private Set<Product> products;
-	@OneToMany (mappedBy = "sinCompanyClient")
-	private Set<Sinister> sinisters;
 	
-	public String getPasswordC() {
-		return passwordC;
-	}
-	public void setPasswordC(String passwordC) {
-		this.passwordC = passwordC;
-	}
+	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
+	private Log logClientC;
+	
 	public String getActivityArea() {
 		return activityArea;
 	}
@@ -62,12 +58,6 @@ public class CompanyClient {
 	public void setFax(long fax) {
 		this.fax = fax;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	public int getEmployeesNb() {
 		return employeesNb;
 	}
@@ -79,6 +69,18 @@ public class CompanyClient {
 	}
 	public void setNbDeclaredSinistersC(int nbDeclaredSinistersC) {
 		this.nbDeclaredSinistersC = nbDeclaredSinistersC;
+	}
+	public long getIdClientC() {
+		return idClientC;
+	}
+	public void setIdClientC(long idClientC) {
+		this.idClientC = idClientC;
+	}
+	public Log getLogClientC() {
+		return logClientC;
+	}
+	public void setLogClientC(Log logClientC) {
+		this.logClientC = logClientC;
 	}
 	public CompanyClient() {
 		super();

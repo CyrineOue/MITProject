@@ -1,30 +1,36 @@
 package tn.MITProject.entities;
 
 
-import java.util.Set;
+import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 
 
 @Entity
-
-public class Admin {
+@Table(name="Admin")
+public class Admin implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column(name="idAdmin")
 	private long idAdmin;
 	private String login;
-	private String password;
-	private String email;
-	@OneToMany (mappedBy = "readmin")
-	private Set<Report> reports;
-	@OneToMany (mappedBy = "agadmin")
-	private Set<Agent> agents;
+	
+	
+	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
+	private Log logAdmin;
 	
 	public long getIdAdmin() {
 		return idAdmin;
@@ -38,28 +44,21 @@ public class Admin {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	public String getPassword() {
-		return password;
+	public Log getLogAdmin() {
+		return logAdmin;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setLogAdmin(Log logAdmin) {
+		this.logAdmin = logAdmin;
 	}
-	public String getEmail() {
-		return email;
+	public Admin() {
+		
+		// TODO Auto-generated constructor stub
 	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public Admin(long idAdmin, String login, String password, String email) {
+	public Admin(long idAdmin, String login) {
 		super();
 		this.idAdmin = idAdmin;
 		this.login = login;
-		this.password = password;
-		this.email = email;
-	}
-	public Admin() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	

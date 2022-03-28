@@ -1,47 +1,45 @@
 package tn.MITProject.entities;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity 
-@Table
-public class ParticularClient {
+@Table(name="ParticularClient")
+public class ParticularClient implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="idClientP")
 	private long idClientP ;
-	private String passwordP ;
 	private String firstName;
 	private String lastName;
 	private String profession ;
 	private long cin;
 	private Date birthDate; 
+	@Enumerated(EnumType.STRING)
 	private Gender gender; 
 	private String homeAddress;
 	private int phoneNo;
-	private String email;
 	private int nbDeclaredSinistersP;
 	
-	@ManyToMany(mappedBy = "particularClient")
-	private Set<Product> products;
-	@OneToMany (mappedBy = "sinParticularClient")
-	private Set<Sinister> sinisters;
+	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
+	private Log logClientP;
 	
-	public String getPassword() {
-		return passwordP;
-	}
-	public void setPassword(String password) {
-		this.passwordP = password;
-	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -90,17 +88,29 @@ public class ParticularClient {
 	public void setPhoneNo(int phoneNo) {
 		this.phoneNo = phoneNo;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	public int getNbDeclaredSinisters() {
 		return nbDeclaredSinistersP;
 	}
 	public void setNbDeclaredSinisters(int nbDeclaredSinisters) {
 		this.nbDeclaredSinistersP = nbDeclaredSinisters;
+	}
+	public long getIdClientP() {
+		return idClientP;
+	}
+	public void setIdClientP(long idClientP) {
+		this.idClientP = idClientP;
+	}
+	public int getNbDeclaredSinistersP() {
+		return nbDeclaredSinistersP;
+	}
+	public void setNbDeclaredSinistersP(int nbDeclaredSinistersP) {
+		this.nbDeclaredSinistersP = nbDeclaredSinistersP;
+	}
+	public Log getLogClientP() {
+		return logClientP;
+	}
+	public void setLogClientP(Log logClientP) {
+		this.logClientP = logClientP;
 	}
 	public ParticularClient() {
 		super();
