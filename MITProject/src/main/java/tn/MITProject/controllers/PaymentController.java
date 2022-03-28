@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.stripe.model.Charge;
 
 import tn.MITProject.Service.PaymentService;
-import tn.MITProject.Service.StripeClientService;
 import tn.MITProject.entities.Contract;
 import tn.MITProject.entities.Payment;
 	@RestController
@@ -67,19 +66,7 @@ import tn.MITProject.entities.Payment;
 		
 		
 
-	    private StripeClientService stripeClient;
-
-	    @Autowired
-	    PaymentController(StripeClientService stripeClient) {
-	        this.stripeClient = stripeClient;
-	    }
-
-	    @PostMapping("/charge")
-	    public Charge chargeCard(HttpServletRequest request) throws Exception {
-	        String token = request.getHeader("token");
-	        Double amount = Double.parseDouble(request.getHeader("amount"));
-	        return this.stripeClient.chargeNewCard(token, amount);
-	    }
+	 
 				
 	}
 

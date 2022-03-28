@@ -5,17 +5,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.stripe.model.Coupon;
 
 import tn.MITProject.Service.StripeService;
 import tn.MITProject.entities.Response;;
 
-@Controller
+@RestController
+@RequestMapping("/APIPayment")
 public class APIPaymentController {
 
-	@Value("${pk_test_51KcqqdHzwWmhnMrQs42O2uEdkZxtj39kyyByPEOlS49XofOWUyk7EcmQVwHQJTDfdUW57GBZ8oGJ8Dc8k0xzzUSg003xsZZh83}")
+	@Value("${stripe.key.public}")
 	private String API_PUBLIC_KEY;
 
 	private tn.MITProject.Service.StripeService stripeService;

@@ -18,8 +18,8 @@ package tn.MITProject.Service;
 	public class StripeService {
 
 		@Value("${stripe.key.secret}")
-		private String API_SECET_KEY="sk_test_51KcqqdHzwWmhnMrQxhRNLyx8zVtY74sEOP7wZZIIkGlfQOk3Appr3gPM45qa0snFLiH4xcDYAWD0C2q6MM1mgM6200xaH18vuM";
-		
+		private String API_SECET_KEY;
+
 		public StripeService() {
 
 		}
