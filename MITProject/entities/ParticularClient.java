@@ -41,6 +41,7 @@ public class ParticularClient implements Serializable{
 	private boolean archived=false;
 	private final LocalDate sbuscriptionDate = LocalDate.now();
 	private CategoryClient CategoryP;
+	private String MailP;
 	
 	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
 	private Log logClientP;
@@ -153,6 +154,12 @@ public class ParticularClient implements Serializable{
 	}
 	public void setCategoryP(CategoryClient categoryP) {
 		CategoryP = categoryP;
+	}
+	public String getMailP() {
+		return MailP;
+	}
+	public void setMailP(String mailP) {
+		MailP = mailP;
 	}
 	
 	

@@ -43,10 +43,11 @@ public class CompanyClient implements Serializable{
 	private int nbDeclaredSinistersC;
 	private boolean archived=false;
 	private final LocalDate sbuscriptionDate = LocalDate.now();
-	
+	private CategoryClient categoryC;
+	private String MailC;
 	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
 	private Log logClientC;
-	private CategoryClient categoryC;
+	
 		
 	public long getIdClientC() {
 		return idClientC;
@@ -149,6 +150,14 @@ public class CompanyClient implements Serializable{
 
 	public void setCategoryC(CategoryClient categoryC) {
 		this.categoryC = categoryC;
+	}
+
+	public String getMailC() {
+		return MailC;
+	}
+
+	public void setMailC(String mailC) {
+		MailC = mailC;
 	}
 	
 
