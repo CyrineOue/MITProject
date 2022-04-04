@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -43,8 +44,20 @@ public class Log implements Serializable {
 	@JsonIgnore
 	private Expert expert;
 	
+	@OneToOne(mappedBy = "logClientP")
+	@JsonIgnore
+	private ParticularClient particularClient;
+	
+	@OneToOne(mappedBy = "logClientC")
+	@JsonIgnore
+	private CompanyClient companyClient;
+	
 	@ManyToMany (mappedBy = "user")
+	@JsonIgnore
 	private Set<Product> products;
+	
+	@OneToMany (mappedBy = "logSinister")
+	private Set<Sinister> sinisters; 
 
 	public long getIdLog() {
 		return idLog;
@@ -99,6 +112,24 @@ public class Log implements Serializable {
 	}
 	public void setProducts(Set<Product> products) {
 		this.products = products;
+	}
+	public ParticularClient getParticularClient() {
+		return particularClient;
+	}
+	public void setParticularClient(ParticularClient particularClient) {
+		this.particularClient = particularClient;
+	}
+	public CompanyClient getCompanyClient() {
+		return companyClient;
+	}
+	public void setCompanyClient(CompanyClient companyClient) {
+		this.companyClient = companyClient;
+	}
+	public Set<Sinister> getSinisters() {
+		return sinisters;
+	}
+	public void setSinisters(Set<Sinister> sinisters) {
+		this.sinisters = sinisters;
 	}
 	public Log() {
 		

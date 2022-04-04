@@ -1,7 +1,6 @@
 package tn.MITProject.entities;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,9 +8,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="Expert")
@@ -26,12 +26,13 @@ public class Expert implements Serializable{
 	private String name;
 	private String lastName;
 	private long phoneNb;
+	private double salary;
 	private String expertiseField;
 	
 	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
+	@JsonIgnore
 	private Log logExpert;
-	@OneToMany (mappedBy = "expert")
-	private Set<Sinister> sinisters; 
+	
 	
 	public long getIdExpert() {
 		return idExpert;
@@ -69,12 +70,7 @@ public class Expert implements Serializable{
 	public void setLogExpert(Log logExpert) {
 		this.logExpert = logExpert;
 	}
-	public Set<Sinister> getSinisters() {
-		return sinisters;
-	}
-	public void setSinisters(Set<Sinister> sinisters) {
-		this.sinisters = sinisters;
-	}
+	
 	public Expert(long idExpert, String name, String lastName,  long phoneNb,
 			String expertiseField) {
 		super();
@@ -87,6 +83,12 @@ public class Expert implements Serializable{
 	public Expert() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	public double getSalary() {
+		return salary;
+	}
+	public void setSalary(double salary) {
+		this.salary = salary;
 	}
 	
 

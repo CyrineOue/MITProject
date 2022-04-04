@@ -1,8 +1,10 @@
 package tn.MITProject.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,9 +43,9 @@ public class ReportController {
 	// http://localhost:8081/mit/report/add-report
 	@PostMapping("/add-report")
 	@ResponseBody
-	public Report addReport(@RequestBody Report a)
+	public Report addReport(@RequestBody Report r)
 	{
-	Report report = reportService.addReport(a);
+	Report report = reportService.addReport(r);
 	return report;
 	}
 	
@@ -61,5 +63,23 @@ public class ReportController {
 	public void removeReport(@PathVariable("report-id") Long reportId) {
 	reportService.deleteReport(reportId);
 	}
+	
+	// http://localhost:8081/mit/report/assign-report/2/1
+	@PutMapping("/assign-report/{report-id}/{admin-id}")
+	@ResponseBody
+	public void assignReportToAdmin(@PathVariable("report-id") Long reportId, @PathVariable("admin-id") Long adminId)
+	{
+	   reportService.assignReportToAdmin(reportId, adminId);
+	 }
+	
+	//http://localhost:8081/mit/report/bestCompanyClient/2022-03-10/2022-03-18
+		@GetMapping("/bestCompanyClient/{from}/{to}")
+		@ResponseBody
+		public String  bestCompanyClient(@PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date from,@PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date to) {    
+		String list = reportService.bestCompanyClient( from , to ) ;
+		return list ; 
+	    }
+	
+
 
 }

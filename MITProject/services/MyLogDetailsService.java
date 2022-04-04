@@ -1,9 +1,9 @@
 package tn.MITProject.services;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+//import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+//import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -25,7 +25,7 @@ public class MyLogDetailsService implements UserDetailsService {
 	private LogService logService;
 
 	@Override
-	@Transactional
+	 @Transactional
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Log log = logService.findLogByLogEmail(email);
 		if (log == null) {
@@ -36,13 +36,13 @@ public class MyLogDetailsService implements UserDetailsService {
 				
 	}
 	private List<GrantedAuthority> getUserAuthority(Log log){
-        /*List<GrantedAuthority> authorities = new ArrayList<>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(log.getRole().getAuthority()));
-        return authorities;*/
-        Set<GrantedAuthority> roles = new HashSet<GrantedAuthority>();
+        return authorities;
+        /*Set<GrantedAuthority> roles = new HashSet<GrantedAuthority>();
             roles.add(new SimpleGrantedAuthority(log.getRole().getAuthority()));      
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles);
-        return grantedAuthorities;  
+        return grantedAuthorities; */ 
 	}
 
 }

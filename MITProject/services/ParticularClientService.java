@@ -15,5 +15,14 @@ public interface ParticularClientService {
 	ParticularClient updateParticularClient (ParticularClient p);
 
 	ParticularClient retrieveParticularClient (Long id);
+	
+    float EvaluateSeniority(Long idClient);
+	
+	float EvaluateArea (Long idClient);
+	
+	float scoreParticularClient(Long idClient);
+	
+	int CategoriyParticularClient (Long idClient );
+	
 
 }

@@ -26,6 +26,7 @@ public class Agent implements Serializable{
 	private String Name;
 	private String LastName;
 	private Long PhoneNb;
+	private double salary;
 	private Long ContractsNb;
 	
 	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
@@ -84,6 +85,12 @@ public class Agent implements Serializable{
 	public Agent() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	public double getSalary() {
+		return salary;
+	}
+	public void setSalary(double salary) {
+		this.salary = salary;
 	}
 	
 	

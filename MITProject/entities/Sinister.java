@@ -27,19 +27,24 @@ public class Sinister implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private Type typeSinister;
 	@Temporal(TemporalType.DATE)
-	private Date dateDeclaration;
+	private Date declarationDate;
+	@Temporal (TemporalType.DATE)
+	private Date indemnisationDate;
+	@Temporal (TemporalType.DATE)
+	private Date sinisterDate;
+	private Integer declarationDelay=7;
 	private String expertJudgement;
-	private long damageAmount;
+	private Float damageAmount;
 	@Enumerated(EnumType.STRING)
-	private Status statusSinister;
-	private String placement;
+	private Status sinisterStatus;
+	private String sinisterLocation;
+	private String sinisterDescription;
+	private String causeOfRejection;
+	private String isFraud;
+	private Integer refundPercentage;
+	private Float refundAmount;
 	@ManyToOne
-	private CompanyClient sinCompanyClient;
-	@ManyToOne
-	private ParticularClient sinParticularClient;
-	@ManyToOne
-	private Expert expert;
-	
+	private Log logSinister;
 	
 	public long getIdSinister() {
 		return idSinister;
@@ -53,11 +58,29 @@ public class Sinister implements Serializable{
 	public void setTypeSinister(Type typeSinister) {
 		this.typeSinister = typeSinister;
 	}
-	public Date getDateDeclaration() {
-		return dateDeclaration;
+	public Date getDeclarationDate() {
+		return declarationDate;
 	}
-	public void setDateDeclaration(Date dateDeclaration) {
-		this.dateDeclaration = dateDeclaration;
+	public void setDeclarationDate(Date declarationDate) {
+		this.declarationDate = declarationDate;
+	}
+	public Date getIndemnisationDate() {
+		return indemnisationDate;
+	}
+	public void setIndemnisationDate(Date indemnisationDate) {
+		this.indemnisationDate = indemnisationDate;
+	}
+	public Date getSinisterDate() {
+		return sinisterDate;
+	}
+	public void setSinisterDate(Date sinisterDate) {
+		this.sinisterDate = sinisterDate;
+	}
+	public Integer getDeclarationDelay() {
+		return declarationDelay;
+	}
+	public void setDeclarationDelay(Integer declarationDelay) {
+		this.declarationDelay = declarationDelay;
 	}
 	public String getExpertJudgement() {
 		return expertJudgement;
@@ -65,37 +88,86 @@ public class Sinister implements Serializable{
 	public void setExpertJudgement(String expertJudgement) {
 		this.expertJudgement = expertJudgement;
 	}
-	public long getDamageAmount() {
+	public Float getDamageAmount() {
 		return damageAmount;
 	}
-	public void setDamageAmount(long damageAmount) {
+	public void setDamageAmount(Float damageAmount) {
 		this.damageAmount = damageAmount;
 	}
-	public Sinister(long idSinister, Type typeSinister, Date dateDeclaration, String expertJudgement,
-			long damageAmount) {
-		super();
-		this.idSinister = idSinister;
-		this.typeSinister = typeSinister;
-		this.dateDeclaration = dateDeclaration;
-		this.expertJudgement = expertJudgement;
-		this.damageAmount = damageAmount;
+	public Status getSinisterStatus() {
+		return sinisterStatus;
+	}
+	public void setSinisterStatus(Status sinisterStatus) {
+		this.sinisterStatus = sinisterStatus;
+	}
+	public String getSinisterLocation() {
+		return sinisterLocation;
+	}
+	public void setSinisterLocation(String sinisterLocation) {
+		this.sinisterLocation = sinisterLocation;
+	}
+	public String getSinisterDescription() {
+		return sinisterDescription;
+	}
+	public void setSinisterDescription(String sinisterDescription) {
+		this.sinisterDescription = sinisterDescription;
+	}
+	public String getCauseOfRejection() {
+		return causeOfRejection;
+	}
+	public void setCauseOfRejection(String causeOfRejection) {
+		this.causeOfRejection = causeOfRejection;
+	}
+	public String getIsFraud() {
+		return isFraud;
+	}
+	public void setIsFraud(String isFraud) {
+		this.isFraud = isFraud;
+	}
+	public Integer getRefundPercentage() {
+		return refundPercentage;
+	}
+	public void setRefundPercentage(Integer refundPercentage) {
+		this.refundPercentage = refundPercentage;
+	}
+	public Log getLogSinister() {
+		return logSinister;
+	}
+	public void setLogSinister(Log logSinister) {
+		this.logSinister = logSinister;
 	}
 	public Sinister() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Status getStatusSinister() {
-		return statusSinister;
+	public Float getRefundAmount() {
+		return refundAmount;
 	}
-	public void setStatusSinister(Status statusSinister) {
-		this.statusSinister = statusSinister;
+	public void setRefundAmount(Float refundAmount) {
+		this.refundAmount = refundAmount;
 	}
-	public String getPlacement() {
-		return placement;
+	public Sinister(long idSinister, Type typeSinister, Date declarationDate, Date indemnisationDate, Date sinisterDate,
+			Integer declarationDelay, String expertJudgement, Float damageAmount, Status sinisterStatus,
+			String sinisterLocation, String sinisterDescription, String causeOfRejection, String isFraud,
+			Integer refundPercentage, Float refundAmount) {
+		super();
+		this.idSinister = idSinister;
+		this.typeSinister = typeSinister;
+		this.declarationDate = declarationDate;
+		this.indemnisationDate = indemnisationDate;
+		this.sinisterDate = sinisterDate;
+		this.declarationDelay = declarationDelay;
+		this.expertJudgement = expertJudgement;
+		this.damageAmount = damageAmount;
+		this.sinisterStatus = sinisterStatus;
+		this.sinisterLocation = sinisterLocation;
+		this.sinisterDescription = sinisterDescription;
+		this.causeOfRejection = causeOfRejection;
+		this.isFraud = isFraud;
+		this.refundPercentage = refundPercentage;
+		this.refundAmount = refundAmount;
 	}
-	public void setPlacement(String placement) {
-		this.placement = placement;
-	}
+	
 
 
 	
