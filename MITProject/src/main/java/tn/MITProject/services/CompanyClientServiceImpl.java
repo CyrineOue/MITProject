@@ -182,8 +182,8 @@ public class CompanyClientServiceImpl implements CompanyClientService {
 	@Override
 	public float scoreCompanyClient(Long idClient) {
 		
-				return (float) (/*0.2 *  contractService.EvaluateContractsNb(idClient) 
-						+ 0.2 * contractService.EvaluateClaimsAmount(idClient)+*/ 0.1 * EvaluateSeniority(idClient) 
+				return (float) (0.2 *  contractService.EvaluateCompanyContractsNb(idClient)+
+						0.2 * contractService.EvaluateCompanyClaimsAmount(idClient)+ 0.1 * EvaluateSeniority(idClient) 
 						+0.05*EvaluateCapital(idClient) +0.05* EvaluateEmployeesNb(idClient) 
 						+ 0.3* EvaluateArea(idClient) /*+ 0.1 *paymentService.OnTimePayment(idClient) */
 						); 

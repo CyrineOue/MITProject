@@ -153,8 +153,8 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 	 
 				
 		return (float) (0.3* EvaluateArea(idClient) + 0.15 * EvaluateSeniority(idClient) 
-		+ 0.3 *contractService.EvaluateClaimsAmount(idClient) +
-		0.15 * contractService.EvaluateContractsNb(idClient)
+		+ 0.3 *contractService.EvaluateParticularClaimsAmount(idClient) +
+		0.15 * contractService.EvaluateParticularContractsNb(idClient)
 	//   + 0.1 * OnTimePaymentsRate (idClient) 
 				);
 	}

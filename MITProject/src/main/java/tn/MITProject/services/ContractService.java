@@ -22,7 +22,9 @@ public interface ContractService {
 	//Contract generateContract(long IDClient, List<tn.MITProject.Service.Product> product);
 //	Contract addContract(Long IDClient, List<Product> product);
 	//Contract deletedContract(Long IDContract);
-    float EvaluateContractsNb (Long idClient );	
-	float EvaluateClaimsAmount (Long idClient);
+	float EvaluateParticularContractsNb(Long idClient);
+    float EvaluateCompanyContractsNb(Long idClient);
+    float EvaluateParticularClaimsAmount(Long idClient);
+    float EvaluateCompanyClaimsAmount(Long idClient);
 
 }

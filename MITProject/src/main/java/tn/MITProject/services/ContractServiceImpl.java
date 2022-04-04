@@ -142,8 +142,8 @@ public class ContractServiceImpl implements ContractService {
 */
 	
 	@Override
-	public float EvaluateContractsNb(Long idClient) {
-		int contractsNb= contractrepository.CountContracts(idClient);
+	public float EvaluateParticularContractsNb(Long idClient) {
+		int contractsNb= contractrepository.CountParticularClientContracts(idClient);
 		if (contractsNb >5 ) {
 			return 1;
 		}
@@ -155,15 +155,42 @@ public class ContractServiceImpl implements ContractService {
 		return 0;
 	}
 	@Override
-	public float EvaluateClaimsAmount(Long idClient) {
+	public float EvaluateCompanyContractsNb(Long idClient) {
+		int contractsNb= contractrepository.CountCompanyClientContracts(idClient);
+		if (contractsNb >5 ) {
+			return 1;
+		}
+			
+		else { 
+			if (contractsNb>3)
+				return 0.5f;
+		}
+		return 0;
+	}
+	@Override
+	public float EvaluateParticularClaimsAmount(Long idClient) {
 		 
-		/*float rapport =contractrepository.TotalRefundAmount(idClient)/ contractrepository.TotalCeillingAmount(idClient);
+		float rapport =contractrepository.TotalParticularRefundAmount(idClient)/ contractrepository.TotalParticularCeillingAmount(idClient);
 		if (rapport<0.25)
 			return 1;
 		else {
 			if (rapport <0.5)
 				return 0.5f;
-		}*/
+		}
+		return 0;
+		
+	}
+	
+	@Override
+	public float EvaluateCompanyClaimsAmount(Long idClient) {
+		 
+		float rapport =contractrepository.TotalCompanyRefundAmount(idClient)/ contractrepository.TotalCompanyCeillingAmount(idClient);
+		if (rapport<0.25)
+			return 1;
+		else {
+			if (rapport <0.5)
+				return 0.5f;
+		}
 		return 0;
 		
 	}
