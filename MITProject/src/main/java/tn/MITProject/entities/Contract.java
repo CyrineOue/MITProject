@@ -1,5 +1,6 @@
 package tn.MITProject.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -18,7 +19,11 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table (name = "Contract")
-public class Contract {
+public class Contract implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column(name="IDContract")
@@ -33,6 +38,7 @@ public class Contract {
 	private float NetPremium;
 	private float TTCPremium;
 	private float CeillingAmount;
+	private int InstallmentsNB;
 	@Enumerated(EnumType.STRING)
 	private Status Costatus;
 	@ManyToOne
@@ -124,10 +130,11 @@ public class Contract {
 	public void setCeillingAmount(float ceillingAmount) {
 		CeillingAmount = ceillingAmount;
 	}
-	
-
-	
-	
-	
+	public int getInstallmentsNB() {
+		return InstallmentsNB;
+	}
+	public void setInstallmentsNB(int installmentsNB) {
+		InstallmentsNB = installmentsNB;
+	}
 	
 }

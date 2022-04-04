@@ -1,5 +1,6 @@
 package tn.MITProject.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,7 +15,11 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table (name = "Payment")
-public class Payment {
+public class Payment implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column(name="IDPayment")
@@ -22,8 +27,7 @@ public class Payment {
 	private String Method;
 	@Temporal (TemporalType.DATE)
 	private Date PaymentDate;
-	private int InstallmentsNB;
-	private float PaidPremium;
+	private double PaidPremium;
 	private float RemainingPremium;
 	private float RefundAmount;
 	private boolean Status;
@@ -50,16 +54,10 @@ public class Payment {
 	public void setPaymentDate(Date paymentDate) {
 		PaymentDate = paymentDate;
 	}
-	public int getInstallmentsNB() {
-		return InstallmentsNB;
-	}
-	public void setInstallmentsNB(int installmentsNB) {
-		InstallmentsNB = installmentsNB;
-	}
-	public float getPaidPremium() {
+	public double getPaidPremium() {
 		return PaidPremium;
 	}
-	public void setPaidPremium(float paidPremium) {
+	public void setPaidPremium(double paidPremium) {
 		PaidPremium = paidPremium;
 	}
 	public float getRemainingPremium() {
@@ -89,7 +87,9 @@ public class Payment {
 	}
 	public void setCopayment(Contract copayment) {
 		this.copayment = copayment;
-	}
+	} 
+	
+	
 	
 	
 }

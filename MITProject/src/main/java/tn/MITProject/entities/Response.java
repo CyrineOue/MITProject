@@ -1,8 +1,7 @@
 package tn.MITProject.entities;
 
-
 public class Response {
-
+	
 	private boolean status;
     private String details;
     
@@ -37,9 +36,5 @@ public class Response {
 	public String toString() {
 		return "Response [status=" + status + ", details=" + details + "]";
 	}
-	
-	
-	
-    
-    
+
 }

@@ -16,8 +16,6 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
 public class PdfExporter {
-
-	
 	
 	 private List<Payment> listPayments;
      
@@ -97,5 +95,6 @@ public class PdfExporter {
 	           
 	      }
 
+	
 
 }
