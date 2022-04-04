@@ -1,5 +1,4 @@
 package tn.MITProject.entities;
-
 import org.springframework.stereotype.Component;
 
 @Component

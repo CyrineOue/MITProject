@@ -32,5 +32,7 @@ public interface SinisterRepository extends JpaRepository<Sinister, Long> {
 	@Query("SELECT c FROM Contract c join c.coproduct p join p.user u join u.sinisters s "
 			+ "where s.idSinister= :idSinister")
 	Contract retrieveContract(@Param("idSinister") Long idSinister);
+	
+	
 
 }

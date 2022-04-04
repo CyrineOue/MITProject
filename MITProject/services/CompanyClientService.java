@@ -2,7 +2,6 @@ package tn.MITProject.services;
 
 import java.util.List;
 
-import tn.MITProject.entities.CategoryClient;
 import tn.MITProject.entities.CompanyClient;
 
 public interface CompanyClientService {
@@ -27,15 +26,7 @@ public interface CompanyClientService {
 	
 	float scoreCompanyClient(Long id);
 	
-	
-	float TotalCeillingAmount (Long idClient);
-
-	float TotalRefundAmount(Long idClient);
-
-	float EvaluateClaimsAmount(Long idClient);
-	
-	CategoryClient CategoriseCompanyClient (Long idClient);
-
+	int CategoriyCompanyClient(Long idClient); 
 	
 
 }

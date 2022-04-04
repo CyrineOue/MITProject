@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,13 +27,15 @@ public class Payment implements Serializable{
 	private String Method;
 	@Temporal (TemporalType.DATE)
 	private Date PaymentDate;
-	private int InstallmentsNB;
 	private float PaidPremium;
 	private float RemainingPremium;
 	private float RefundAmount;
 	private boolean Status;
-	@OneToOne (mappedBy = "payment")
-	private Contract contract;
+
+	@ManyToOne
+	private Contract copayment;
+	
+	
 	public int getIDPayment() {
 		return IDPayment;
 	}
@@ -51,12 +53,6 @@ public class Payment implements Serializable{
 	}
 	public void setPaymentDate(Date paymentDate) {
 		PaymentDate = paymentDate;
-	}
-	public int getInstallmentsNB() {
-		return InstallmentsNB;
-	}
-	public void setInstallmentsNB(int installmentsNB) {
-		InstallmentsNB = installmentsNB;
 	}
 	public float getPaidPremium() {
 		return PaidPremium;
@@ -82,29 +78,15 @@ public class Payment implements Serializable{
 	public void setStatus(boolean status) {
 		Status = status;
 	}
-	public Contract getContract() {
-		return contract;
-	}
-	public void setContract(Contract contract) {
-		this.contract = contract;
-	}
-	
 	public Payment() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Payment(int iDPayment, String method, Date paymentDate, int installmentsNB, float paidPremium,
-			float remainingPremium, float refundAmount, boolean status, Contract contract) {
-		super();
-		IDPayment = iDPayment;
-		Method = method;
-		PaymentDate = paymentDate;
-		InstallmentsNB = installmentsNB;
-		PaidPremium = paidPremium;
-		RemainingPremium = remainingPremium;
-		RefundAmount = refundAmount;
-		Status = status;
-		this.contract = contract;
+	public Contract getCopayment() {
+		return copayment;
+	}
+	public void setCopayment(Contract copayment) {
+		this.copayment = copayment;
 	} 
 	
 	

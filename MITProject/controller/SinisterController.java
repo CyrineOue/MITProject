@@ -1,6 +1,7 @@
 package tn.MITProject.controller;
 
 import java.util.Date;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.ApiOperation;
 import tn.MITProject.entities.Sinister;
 import tn.MITProject.services.SinisterService;
-import tn.esprit.spring.entities.Reclamation;
 
 @RestController
 @RequestMapping("/sinister")
+
 public class SinisterController {
 	
 	@Autowired
@@ -44,7 +44,7 @@ public class SinisterController {
 	return sinister;
 	}
 	
-	// http://localhost:8081/Achat/sinister/remove-sinister/{sinister-id}
+	// http://localhost:8081/MITProject/sinister/remove-sinister/{sinister-id}
 	@DeleteMapping("/remove-sinister/{sinister-id}")
 	@ResponseBody
 	public void removeSinister(@PathVariable("sinister-id") Long sinisterId) {
@@ -121,19 +121,36 @@ public class SinisterController {
 	return sinisterService.checkSinisterDelay(sinisterId) ;
     }
 	
-	//http://localhost:8081/MITProject/sinister/treatSinistre/{sinister-id}
-	@GetMapping("/treatSinistre/{sinister-id}")
+	//http://localhost:8081/MITProject/sinister/treatSinister/{sinister-id}
+	@GetMapping("/treatSinister/{sinister-id}")
 	@ResponseBody
 	public String  treatSinister(@PathVariable("sinister-id") Long sinisterId) throws Exception {
-	return sinisterService.treatSinister(sinisterId) ;
+	return sinisterService.treatSinister(sinisterId);
     }
 	
 	@GetMapping("/AssignSinisterToExpert/{idSinister}/{idExpert}")
 	@ResponseBody
-	public Reclamation AssignSinisterToExpert(@PathVariable("idSinister") Long idSinister, @PathVariable ("idExpert") Long idExpert){
-	      return  sinisterService.AssignSinisterToExpert(idSinister, idExpert);
+	public void AssignSinisterToExpert(@PathVariable("idSinister") Long idSinister, @PathVariable ("idExpert") Long idExpert){
+	        sinisterService.assignSinisterToExpert(idSinister, idExpert);
 	}
-		 
-		
+	
+	@GetMapping("/sinisterSettlementSpeed/{sinister-id}")
+	@ResponseBody
+	public String  sinisterSettlementSpeed(@PathVariable("sinister-id") Long sinisterId) {
+	return sinisterService.sinisterSettlementSpeed(sinisterId) ;
+	}
 
+
+	@GetMapping("/mostFrequentSinister")
+	@ResponseBody
+	public String  mostFrequentSinister() {
+	return sinisterService.mostFrequentSinister() ;
+			}
+
+
+	@GetMapping("/checkSinisterClaim/{sinister-id}")
+	@ResponseBody
+	public String  checkSinisterClaim(@PathVariable("sinister-id") Long sinisterId) {
+	return sinisterService.checkSinisterClaim(sinisterId) ;
+	}
 }

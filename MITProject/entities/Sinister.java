@@ -23,7 +23,7 @@ public class Sinister implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	private long idSinister;
+	private Long idSinister;
 	@Enumerated(EnumType.STRING)
 	private Type typeSinister;
 	@Temporal(TemporalType.DATE)
@@ -46,10 +46,10 @@ public class Sinister implements Serializable{
 	@ManyToOne
 	private Log logSinister;
 	
-	public long getIdSinister() {
+	public Long getIdSinister() {
 		return idSinister;
 	}
-	public void setIdSinister(long idSinister) {
+	public void setIdSinister(Long idSinister) {
 		this.idSinister = idSinister;
 	}
 	public Type getTypeSinister() {
@@ -146,7 +146,7 @@ public class Sinister implements Serializable{
 	public void setRefundAmount(Float refundAmount) {
 		this.refundAmount = refundAmount;
 	}
-	public Sinister(long idSinister, Type typeSinister, Date declarationDate, Date indemnisationDate, Date sinisterDate,
+	public Sinister(Long idSinister, Type typeSinister, Date declarationDate, Date indemnisationDate, Date sinisterDate,
 			Integer declarationDelay, String expertJudgement, Float damageAmount, Status sinisterStatus,
 			String sinisterLocation, String sinisterDescription, String causeOfRejection, String isFraud,
 			Integer refundPercentage, Float refundAmount) {

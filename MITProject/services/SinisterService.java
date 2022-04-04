@@ -6,7 +6,6 @@ import java.util.List;
 import tn.MITProject.entities.Sinister;
 
 public interface SinisterService {
-	
 	List<Sinister> retrieveAllSinisters();
 	Sinister addSinister (Sinister s);
     void deleteSinister (Long id);
@@ -18,11 +17,12 @@ public interface SinisterService {
 	List<Sinister> retrieveSinisterByContract(Long contractId);
 	List<Sinister> retrieveSinisterByDeclarationDate(Date from , Date to );
 	List<Sinister> retrieveSinisterBySinisterDate(Date from , Date to );
-	Sinister affectSinisterToContract(Long idContrat,Long idSinister );
+	void assignSinisterToExpert(Long idSinister, Long idExpert);
 	String checkSinisterDelay(Long sinisterId) ;
 	String treatSinister(Long siniterId ) throws Exception;
-	void assignSinisterToExpert(Long idSinister, Long idExpert);
-
-	
+	String sinisterSettlementSpeed(Long sinisterId);
+	String mostFrequentSinister();
+	String checkSinisterClaim(Long sinisterId);
+	String indemnityRejectionRatio(Long idExpert);
 
 }

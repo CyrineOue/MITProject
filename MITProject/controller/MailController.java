@@ -11,6 +11,7 @@ import tn.MITProject.entities.MailUser;
 import tn.MITProject.services.MailService;
 
 @RestController
+@RequestMapping("/mailuser")
 public class MailController {
 	@Autowired
 	private MailService notificationService;
@@ -22,7 +23,7 @@ public class MailController {
 	public String send() {
 		user.setFirstName("Ayaa");
 		user.setLastName("hss");
-		user.setEmailAddress("aya.hassine@esprit.tn"); //Receiver's email address
+		user.setEmailAddress("nadine.maazoun@esprit.tn"); //Receiver's email address
 
 		try {
 			notificationService.sendEmail(user);

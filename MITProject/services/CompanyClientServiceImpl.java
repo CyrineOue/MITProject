@@ -11,14 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import tn.MITProject.entities.Area;
-import tn.MITProject.entities.CategoryClient;
-import tn.MITProject.entities.Product;
 import tn.MITProject.entities.CompanyClient;
-import tn.MITProject.entities.Contract;
 import tn.MITProject.entities.Log;
-import tn.MITProject.entities.Payment;
 import tn.MITProject.entities.Role;
 import tn.MITProject.repositories.CompanyClientRepository;
 import tn.MITProject.repositories.ContractRepository;
@@ -183,71 +178,33 @@ public class CompanyClientServiceImpl implements CompanyClientService {
 			return 0.22f;
 		return 0;
 	}
-	@Override
-	public float TotalCeillingAmount(Long idClient) {
-		CompanyClient cc=companyclientrepository.findById(idClient).orElse(null);
-		float rst =0f;
-		for (Product p: cc.getLogClientC().getProducts()) {
-			for (Contract c: p.getContracts()) {
-				rst+=c.getCeillingAmount();
-			}
-		}
-		return rst;
-	}
-	@Override
-	public float TotalRefundAmount(Long idClient) {
-		CompanyClient cc=companyclientrepository.findById(idClient).orElse(null);
-		float rst =0f;
-		for (Product p: cc.getLogClientC().getProducts()) {
-			for (Contract c: p.getContracts()) {
-				for (Payment pay:c.getPayments()) {
-					rst+=pay.getRefundAmount();
-				}
-			}
-		}
-		return rst;
-	}
-	@Override
-	public float EvaluateClaimsAmount(Long idClient) {
-		 
-		float rapport =TotalRefundAmount(idClient)/TotalCeillingAmount(idClient);
-		if (rapport<0.25)
-			return 1;
-		else {
-			if (rapport <0.5)
-				return 0.5f;
-		}
-		return 0;
-		
-	}
-
+	
 	@Override
 	public float scoreCompanyClient(Long idClient) {
 		
 				return (float) (0.2 *  contractService.EvaluateContractsNb(idClient) 
-						+ 0.2 * EvaluateClaimsAmount(idClient)+ 0.1 * EvaluateSeniority(idClient) 
-						+0.1*EvaluateCapital(idClient) +0.1* EvaluateEmployeesNb(idClient) 
-						+ 0.3* EvaluateArea(idClient) 
-						); 		 	
+						+ 0.2 * contractService.EvaluateClaimsAmount(idClient)+ 0.1 * EvaluateSeniority(idClient) 
+						+0.05*EvaluateCapital(idClient) +0.05* EvaluateEmployeesNb(idClient) 
+						+ 0.3* EvaluateArea(idClient) /*+ 0.1 *paymentService.OnTimePayment(idClient) */
+						); 
+				//		 
+			
 	}
-
-
 
 	@Override
-	public CategoryClient CategoriseCompanyClient(Long idClient) {
-		CompanyClient cc=companyclientrepository.findById(idClient).orElse(null);
+	public int CategoriyCompanyClient(Long idClient) {
 		if (scoreCompanyClient(idClient)>0.5) {
-			cc.setCategoryC(CategoryClient.TOP);
+			//System.out.println("Ce client fait partie de la meilleure catégorie : 1");
+			return 1; 
 		}
 		else 
-			if(scoreCompanyClient(idClient)>0.25) {
-				cc.setCategoryC(CategoryClient.MEDIUM);
-			}
-			else
-				cc.setCategoryC(CategoryClient.LOW);
-		return cc.getCategoryC();
+			if (scoreCompanyClient(idClient)>0.25) {
+				//System.out.println("Ce client fait partie de la catégorie moyenne: 2");
+				return 2; }
+			else {
+				//System.out.println("Ce client fait partie de la faible catégorie : 3");
+				return 3; }
+		
 	}
-
-
 
 }

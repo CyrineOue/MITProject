@@ -61,5 +61,12 @@ public class CompanyClientController {
 	public void removeCompanyClient(@PathVariable("companyclient-id") Long companyclientId) {
 	companyclientService.deleteCompanyClient(companyclientId);
 	}
+	
+	@GetMapping("/score-companyClient/{companyClient-id}")
+	// http://localhost:8086/MITMVC/CompanyClient/score-companyClient/{companyClient-id}
+	@ResponseBody
+	public float getScoreCompanyClient(@PathVariable("companyClient-id") Long companyClientId) {
+	return companyclientService.scoreCompanyClient(companyClientId);
+	}
 
 }
