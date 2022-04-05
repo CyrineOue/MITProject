@@ -31,6 +31,12 @@ public interface ProductService {
 		
 		List<Product> findProductByType(Type TypeProduit);
 		
+		int countContractByProduct(Long idprod);
+		
+		Product BestSellerProduct();
+		
+		Product WorstSellerProduct();
+		
 		//Primum Calculation 
 		
 		//AgricultureHailInsurance
@@ -44,5 +50,7 @@ public interface ProductService {
 		
 		//Bicycle&MotorcycleInsurance
 		Double BMIPremimumCalculation(Double propertyValue, Integer insuredAge );
+
+		
 
 }
