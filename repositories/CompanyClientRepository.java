@@ -7,9 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import tn.MITProject.entities.CompanyClient;
 
-
 @Repository
 public interface CompanyClientRepository extends CrudRepository<CompanyClient, Long> {
+	
 	@Query("SELECT c FROM CompanyClient c WHERE c.CategoriyCompanyClient(c.idClientC)= :cat ")
 	CompanyClient IdealCompanyClient(@Param("cat") int cat); 
+
+
 }

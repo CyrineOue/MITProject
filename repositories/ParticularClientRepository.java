@@ -6,8 +6,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import tn.MITProject.entities.ParticularClient;
+
 @Repository
 public interface ParticularClientRepository extends CrudRepository<ParticularClient, Long> {
 	@Query("SELECT p FROM ParticularClient p WHERE p.CategoriyParticularClient(p.idClientP)= :cat ")
-	ParticularClient IdealParticularClient(@Param("cat") int cat); 
+	ParticularClient IdealParticularClient(@Param("cat") int cat);
+
 }
