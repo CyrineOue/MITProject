@@ -1,6 +1,6 @@
 package tn.MITProject.entities;
 
-public enum Area{
+public enum Area {
 	ARIANA,
 	BEJA,
 	BENAROUS,
@@ -25,4 +25,5 @@ public enum Area{
 	TOZEUR,
 	TUNIS,
 	ZAGHOUAN ;
+
 }
