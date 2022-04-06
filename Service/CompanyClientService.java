@@ -1,18 +1,17 @@
-package tn.MITProject.Service;
+package tn.MITProject.services;
 
 import java.util.List;
-
 import tn.MITProject.entities.CompanyClient;
 
-
 public interface CompanyClientService {
+	
 	List<CompanyClient> retrieveAllCompanyClients();
 
-	CompanyClient addCompanyClient (CompanyClient cc);
+	CompanyClient addCompanyClient (CompanyClient c);
 
-	void removeCompanyClient (Long id);
+	void deleteCompanyClient (Long id);
 
-	CompanyClient updateCompanyClient (CompanyClient cc);
+	CompanyClient updateCompanyClient (CompanyClient c);
 
 	CompanyClient retrieveCompanyClient (Long id);
 	
@@ -26,8 +25,9 @@ public interface CompanyClientService {
 	
 	float scoreCompanyClient(Long id);
 	
-	int CategoriyCompanyClient(Long idClient); 
+	
+	void CategoriseCompanyClient ();
+	
 	
 
-	
 }

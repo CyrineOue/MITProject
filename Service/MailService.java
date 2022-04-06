@@ -1,4 +1,4 @@
-package tn.MITProject.Service;
+package tn.MITProject.services;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -11,39 +11,48 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import tn.MITProject.entities.User;
+import tn.MITProject.repositories.CompanyClientRepository;
+import tn.MITProject.repositories.ParticularClientRepository;
 
 @Service
-public class MailService{
-	
+public class MailService {
 	private JavaMailSender javaMailSender;
-	
 	@Autowired
+	
 	public MailService(JavaMailSender javaMailSender) {
 		this.javaMailSender = javaMailSender;
 	}
-	
-	public void sendEmail(User user) throws MailException {
+
+	@Autowired
+	CompanyClientRepository companyClientRepository;
+	@Autowired
+	ParticularClientRepository particularClientRepository;
+	public void ConfirmByMail(String email) throws MailException {
 		SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setTo(user.getEmailAddress());
-		mail.setSubject("Testing Mail API");
-		mail.setText("Mail API DONE ! Good Job Aya ! ");
 		
-		javaMailSender.send(mail);
-}
-	public void sendEmailWithAttachment(User user) throws MailException, MessagingException {
+			mail.setTo(email);
+			mail.setSubject("MIT");
+			mail.setText("Dear Client, This is a mail confirming your subscription in MIT. "
+					+ "Have a good day "
+	);
+			javaMailSender.send(mail);
+	}
+	
+	public void sendEmailWithAttachment(String email) throws MailException, MessagingException {
 
-		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-		
-		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+		MimeMessage message = javaMailSender.createMimeMessage();
 
-		helper.setTo(user.getEmailAddress());
-		helper.setSubject("Testing Mail API with Attachment");
+		MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+		helper.setTo(email);
+		helper.setSubject("MIT");
 		helper.setText("Please find the attached document below.");
 
-		ClassPathResource classPathResource = new ClassPathResource("Attachment.pdf");
+		
+		ClassPathResource classPathResource = new ClassPathResource("MITLogo.png");
 		helper.addAttachment(classPathResource.getFilename(), classPathResource);
 
-		javaMailSender.send(mimeMessage);
+		javaMailSender.send(message);
 	}
+
 }

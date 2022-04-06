@@ -1,4 +1,4 @@
-package tn.MITProject.Service;
+package tn.MITProject.services;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -7,41 +7,47 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import tn.MITProject.entities.Area;
-import tn.MITProject.entities.Log;
 import tn.MITProject.entities.ParticularClient;
+
+import tn.MITProject.entities.Area;
+import tn.MITProject.entities.CategoryClient;
+import tn.MITProject.entities.Log;
 import tn.MITProject.entities.Role;
-import tn.MITProject.repositories.LogRepository;
 import tn.MITProject.repositories.ParticularClientRepository;
+import tn.MITProject.repositories.ContractRepository;
+import tn.MITProject.repositories.LogRepository;
 
 @Service
 public class ParticularClientServiceImpl implements ParticularClientService {
-	@Autowired
-	ParticularClientRepository particularClientRepository;
-	@Autowired
-	ContractService contractService;
 	
+	@Autowired
+	ParticularClientRepository particularclientrepository;
 	@Autowired
 	LogRepository logrepository;
+	@Autowired
+	ContractService contractService;
+	@Autowired
+	ContractRepository contractRepository;
 	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-	
-	
+
+
 	@Override
 	public List<ParticularClient> retrieveAllParticularClients() {
-		
-		return ( List<ParticularClient>) particularClientRepository.findAll();
+		return (List<ParticularClient>) particularclientrepository.findAll();
 	}
 
 	@Transactional
 	public ParticularClient addParticularClient(ParticularClient p) {
 		Log log= saveLog(p);
 		p.setLogClientP(log);
-		particularClientRepository.save(p);
+		particularclientrepository.save(p);
 		return p;
 	}
+	
 	private Log saveLog(ParticularClient p){
 		Log log=p.getLogClientP();
 		log.setPassword(bCryptPasswordEncoder.encode(p.getLogClientP().getPassword()));
@@ -49,14 +55,12 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 		logrepository.save(log);
 		return log;
 	}
+
 	@Override
-	public void removeParticularClient(Long id) {
-		/*
-		 * ParticularClient pc =particularClientRepository.findById(id).orElse(null);
-		 * pc.setArchived(true);
-		 */
-		particularClientRepository.deleteById(id);
-		
+	public void deleteParticularClient(Long id) {
+		ParticularClient pc = particularclientrepository.findById(id).orElse(null);
+		pc.setArchived(true);
+		particularclientrepository.save(pc);
 	}
 
 	@Transactional
@@ -64,9 +68,10 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 		Log log= updateLog(p);
 		p.setLogClientP(log);
 		log.setPassword(bCryptPasswordEncoder.encode(p.getLogClientP().getPassword()));
-		particularClientRepository.save(p);
+		particularclientrepository.save(p);
 		return p;
 	}
+	
 	private Log updateLog(ParticularClient a){
 		Log log=a.getLogClientP();
 		log.setRole(Role.PARTICULARCLIENT);
@@ -74,19 +79,14 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 		return log;
 	}
 
-
 	@Override
 	public ParticularClient retrieveParticularClient(Long id) {
-		
-		return particularClientRepository.findById(id).orElse(null);
+		return particularclientrepository.findById(id).orElse(null);
 	}
 	
-
-	
-
 	@Override
 	public float EvaluateSeniority(Long idClient) {
-		ParticularClient pc =particularClientRepository.findById(idClient).orElse(null);
+		ParticularClient pc =particularclientrepository.findById(idClient).orElse(null);
 		LocalDate ld= pc.getSbuscriptionDate();
 		long Seniority = ld.until(LocalDate.now(),ChronoUnit.YEARS);
 		if (Seniority>5) {
@@ -101,8 +101,9 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 
 	@Override
 	public float EvaluateArea(Long idClient) {
-		ParticularClient pc =particularClientRepository.findById(idClient).orElse(null);
+		ParticularClient pc =particularclientrepository.findById(idClient).orElse(null);
 		Area ha =pc.getHomeAddress();
+		
 		if (ha==Area.TUNIS)
 			return 0.75f;
 		if (ha==Area.ARIANA)
@@ -155,26 +156,46 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 	
 	
 	@Override
+	public float EvaluateClaimsAmount(Long idClient) {
+		 
+		float rapport =contractRepository.TotalParticularRefundAmount(idClient)/contractRepository.TotalParticularCeillingAmount(idClient);
+		if (rapport<0.25f)
+			return 1f;
+		else {
+			if (rapport <0.5f)
+				return 0.5f;
+		}
+		return 0f;
+		
+	}
+	
+	@Override
 	public float scoreParticularClient(Long idClient) {
 		
 	 
 				
-		return (float) (0.3* EvaluateArea(idClient) + 0.15 * EvaluateSeniority(idClient) 
-		+ 0.3 *contractService.EvaluateClaimsAmount(idClient) +
-		0.15 * contractService.EvaluateContractsNb(idClient)
-	//   + 0.1 * OnTimePaymentsRate (idClient) 
-				);
+		return (float) (0.3* EvaluateArea(idClient) + 0.2 * EvaluateSeniority(idClient) 
+		+ 0.3 *EvaluateClaimsAmount(idClient) + 0.2 * contractService.EvaluateContractsNb(idClient));
 	}
 
+	// @Scheduled(cron = "*/30 * * * * *" )
+	// @Scheduled(cron="0 8 1 * * *")
 	@Override
-	public int CategoriyParticularClient(Long idClient) {
-		if (scoreParticularClient(idClient)>0.5)
-			return 1; 
-		else 
-			if (scoreParticularClient(idClient)>0.25)
-				return 2;
-			else 
-				return 3;
+	public void categoriseParticularClient() {
+	for (ParticularClient c : particularclientrepository.findAll() ) {
 		
+		if (scoreParticularClient(c.getIdClientP())>0.5) {
+			c.setCategoryP(CategoryClient.TOP);
+		}
+		else 
+			if(scoreParticularClient(c.getIdClientP())>0.25) {
+				c.setCategoryP(CategoryClient.MEDIUM);
+			}
+			else
+				c.setCategoryP(CategoryClient.LOW);
 	}
+}
+	
+
+
 }
