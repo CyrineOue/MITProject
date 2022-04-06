@@ -1,9 +1,8 @@
-package tn.MITProject.controllers;
+package tn.MITProject.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,55 +12,57 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import tn.MITProject.Service.ParticularClientService;
 import tn.MITProject.entities.ParticularClient;
+import tn.MITProject.services.MailService;
+import tn.MITProject.services.ParticularClientService;
 
 @RestController
-@RequestMapping("/ParticularClient")
-//http://localhost:8086/MITMVC/ParticularClient
+@RequestMapping("/particularclient")
 public class ParticularClientController {
+	
 	@Autowired
-	ParticularClientService particularClientService;
-	
-	@PostMapping("/add-particularClient")
-	// http://localhost:8086/MITMVC/ParticularClient/add-particularClient
-	@ResponseBody
-	public ParticularClient addParticularClient(@RequestBody ParticularClient cc)
-	{
-	ParticularClient particularClient = particularClientService.addParticularClient(cc);
-	return particularClient;
-	}
-	
-	
-	@GetMapping("/retrieve-all-particularClients")
-	// http://localhost:8086/MITMVC/ParticularClient/retrieve-all-particularClients
+	ParticularClientService particularclientService;
+	@Autowired
+	MailService mailService;
+
+	// http://localhost:8081/mit/particularclient/retrieve-all-particularclients
+	@GetMapping("/retrieve-all-particularclients")
 	@ResponseBody
 	public List<ParticularClient> getParticularClients() {
-	List<ParticularClient> listParticularClients = particularClientService.retrieveAllParticularClients();
+	List<ParticularClient> listParticularClients = particularclientService.retrieveAllParticularClients();
 	return listParticularClients;
 	}
 	
-	
-	@GetMapping("/retrieve-ParticularClient/{particularClient-id}")
-	// http://localhost:8086/MITMVC/ParticularClient/retrieve-ParticularClient/{particularClient-id}
+	// http://localhost:8081/mit/particularclient/retrieve-particularclient/8
+	@GetMapping("/retrieve-particularclient/{particularclient-id}")
 	@ResponseBody
-	public ParticularClient retrieveParticularClient(@PathVariable("particularClient-id") Long particularClientId) {
-	return particularClientService.retrieveParticularClient(particularClientId);
+	public ParticularClient retrieveParticularClient(@PathVariable("particularclient-id") Long particularclientId) {
+	return particularclientService.retrieveParticularClient(particularclientId);
+	}
+
+	// http://localhost:8081/mit/particularclient/add-particularclient
+	@PostMapping("/add-particularclient")
+	@ResponseBody
+	public ParticularClient addParticularClient(@RequestBody ParticularClient p)
+	{
+	ParticularClient particularclient = particularclientService.addParticularClient(p);
+	mailService.ConfirmByMail(p.getLogClientP().getEmail());
+	return particularclient;
 	}
 	
-	
-	@DeleteMapping("/delete-ParticularClient/{particularClient-id}")
-	// http://localhost:8086/MITMVC/ParticularClient/delete-ParticularClient/{particularClient-id}
+
+	// http://localhost:8081/mit/particularclient/modify-particularclient
+	@PutMapping("/modify-particularclient")
 	@ResponseBody
-	public void deleteParticularClient(@PathVariable("particularClient-id") Long particularClientId) {
-	particularClientService.removeParticularClient(particularClientId);
+	public ParticularClient modifyParticularClient(@RequestBody ParticularClient particularclient) {
+	return particularclientService.updateParticularClient(particularclient);
 	}
 	
-	@PutMapping("/modify-particularClient")
-	// http://localhost:8086/MITMVC/ParticularClient/modify-particularClient
+	// http://localhost:8081/Achat/particularclient/remove-particularclient/{particularclient-id}
+	@PutMapping("/remove-particularclient/{particularclient-id}")
 	@ResponseBody
-	public ParticularClient modifyParticularClient(@RequestBody ParticularClient particularClient ) {
-		
-		return particularClientService.updateParticularClient(particularClient) ;
+	public void removeParticularClient(@PathVariable("particularclient-id") Long particularclientId) {
+	particularclientService.deleteParticularClient(particularclientId);
 	}
+
 }

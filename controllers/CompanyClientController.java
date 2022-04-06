@@ -1,4 +1,4 @@
-package tn.MITProject.controllers;
+package tn.MITProject.controller;
 
 import java.util.List;
 
@@ -13,62 +13,63 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import tn.MITProject.Service.CompanyClientService;
 import tn.MITProject.entities.CompanyClient;
+import tn.MITProject.services.CompanyClientService;
+import tn.MITProject.services.MailService;
 
 @RestController
-@RequestMapping("/CompanyClient")
-//http://localhost:8086/MITMVC/CompanyClient
+@RequestMapping("/companyclient")
 public class CompanyClientController {
+	
 	@Autowired
-	CompanyClientService companyClientService;
-	
-	@PostMapping("/add-companyClient")
-	// http://localhost:8086/MITMVC/CompanyClient/add-companyClient
-	@ResponseBody
-	public CompanyClient addCompanyClient(@RequestBody CompanyClient cc)
-	{
-		CompanyClient companyClient = companyClientService.addCompanyClient(cc);
-	return companyClient;
-	}
-	
-	
-	@GetMapping("/retrieve-all-companyClients")
-	// http://localhost:8086/MITMVC/CompanyClient/retrieve-all-companyClients
+	CompanyClientService companyclientService;
+	@Autowired 
+	MailService mailService;
+
+	// http://localhost:8081/mit/companyclient/retrieve-all-companyclients
+	@GetMapping("/retrieve-all-companyclients")
 	@ResponseBody
 	public List<CompanyClient> getCompanyClients() {
-	List<CompanyClient> listCompanyClients = companyClientService.retrieveAllCompanyClients();
+	List<CompanyClient> listCompanyClients = companyclientService.retrieveAllCompanyClients();
 	return listCompanyClients;
 	}
 	
-	
-	@GetMapping("/retrieve-CompanyClient/{companyClient-id}")
-	// http://localhost:8086/MITMVC/CompanyClient/retrieve-CompanyClient/{companyClient-id}
+	// http://localhost:8081/mit/companyclient/retrieve-companyclient/8
+	@GetMapping("/retrieve-companyclient/{companyclient-id}")
 	@ResponseBody
-	public CompanyClient retrieveCompanyClient(@PathVariable("companyClient-id") Long companyClientId) {
-	return companyClientService.retrieveCompanyClient(companyClientId);
+	public CompanyClient retrieveCompanyClient(@PathVariable("companyclient-id") Long companyclientId) {
+	return companyclientService.retrieveCompanyClient(companyclientId);
 	}
-	
-	
-	@DeleteMapping("/delete-CompanyClient/{companyClient-id}")
-	// http://localhost:8086/MITMVC/CompanyClient/delete-CompanyClient/{companyClient-id}
-	@ResponseBody
-	public void deleteCompanyClient(@PathVariable("companyClient-id") Long companyClientId) {
-	companyClientService.removeCompanyClient(companyClientId);
-	}
-	
-	@PutMapping("/modify-companyClient")
-	// http://localhost:8086/MITMVC/CompanyClient/modify-companyClient
 
+	// http://localhost:8081/mit/companyclient/add-companyclient
+	@PostMapping("/add-companyclient")
 	@ResponseBody
-	public CompanyClient modifyCompanyClient(@RequestBody CompanyClient companyClient) {
-		return companyClientService.updateCompanyClient(companyClient);
+	public CompanyClient addCompanyClient(@RequestBody CompanyClient c)
+	{
+	CompanyClient companyclient = companyclientService.addCompanyClient(c);
+	
+	return companyclient;
 	}
 	
-	@GetMapping("/score-companyClient/{companyClient-id}")
-	// http://localhost:8086/MITMVC/CompanyClient/score-companyClient/{companyClient-id}
+
+	// http://localhost:8081/mit/companyclient/modify-companyclient
+	@PutMapping("/modify-companyclient")
+	@ResponseBody
+	public CompanyClient modifyCompanyClient(@RequestBody CompanyClient companyclient) {
+	return companyclientService.updateCompanyClient(companyclient);
+	}
+	
+	// http://localhost:8081/Achat/companyclient/remove-companyclient/{companyclient-id}
+	@DeleteMapping("/archive-companyclient/{companyclient-id}")
+	@ResponseBody
+	public void archiveCompanyClient(@PathVariable("companyclient-id") Long companyclientId) {
+	companyclientService.deleteCompanyClient(companyclientId);
+	}
+	
+	@GetMapping("/score-companyClient/{companyclient-id}")
 	@ResponseBody
 	public float getScoreCompanyClient(@PathVariable("companyClient-id") Long companyClientId) {
-	return companyClientService.scoreCompanyClient(companyClientId);
+	return companyclientService.scoreCompanyClient(companyClientId);
 	}
+
 }
