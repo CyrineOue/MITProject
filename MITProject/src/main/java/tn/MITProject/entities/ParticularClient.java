@@ -16,6 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
 @Entity 
 @Table(name="ParticularClient")
 public class ParticularClient implements Serializable{
@@ -40,7 +43,16 @@ public class ParticularClient implements Serializable{
 	private int nbDeclaredSinistersP;
 	private boolean archived=false;
 	private final LocalDate sbuscriptionDate = LocalDate.now();
+	private CategoryClient CategoryP;
+	@JsonFormat(shape=Shape.STRING, pattern="dd-MM-yyyy")
+	private Date subscriptionDate;
 	
+	public Date getSubscriptionDate() {
+		return subscriptionDate;
+	}
+	public void setSubscriptionDate(Date subscriptionDate) {
+		this.subscriptionDate = subscriptionDate;
+	}
 	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
 	private Log logClientP;
 	
@@ -146,6 +158,12 @@ public class ParticularClient implements Serializable{
 		this.nbDeclaredSinistersP = nbDeclaredSinistersP;
 		this.archived = archived;
 		this.logClientP = logClientP;
+	}
+	public CategoryClient getCategoryP() {
+		return CategoryP;
+	}
+	public void setCategoryP(CategoryClient categoryP) {
+		CategoryP = categoryP;
 	}
 	
 	

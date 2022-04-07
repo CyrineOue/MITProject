@@ -16,5 +16,7 @@ public interface AdminRepository extends CrudRepository<Admin, Long> {
 
 	@Query("SELECT a FROM Admin a join a.logAdmin l where l.active=true and a.idAdmin =:idUser")
 	Admin retrieveAdmin(@Param("idUser") Long idUser);
+	@Query("SELECT a FROM Admin a join a.logAdmin l where l.email= :email")
+	Admin retrieveAdminByEmail(@Param("email") String email);
 
 }

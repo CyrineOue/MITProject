@@ -126,6 +126,7 @@ public class SinisterController {
 	return sinisterService.treatSinister(sinisterId);
     }
 	
+	//http://localhost:8081/mit/sinister/AssignSinisterToExpert/1/1
 	@GetMapping("/AssignSinisterToExpert/{idSinister}/{idExpert}")
 	@ResponseBody
 	public void AssignSinisterToExpert(@PathVariable("idSinister") Long idSinister, @PathVariable ("idExpert") Long idExpert){

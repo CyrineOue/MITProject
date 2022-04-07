@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
@@ -28,13 +30,13 @@ public class Admin implements Serializable{
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column(name="idAdmin")
 	private long idAdmin;
-	private double salary;
 	private String login;
 	
 	
 	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
 	private Log logAdmin;
 	@OneToMany (mappedBy = "admin")
+	@JsonIgnore
 	private Set<Report> reports;
 	
 	public long getIdAdmin() {
@@ -65,12 +67,7 @@ public class Admin implements Serializable{
 		this.login = login;
 		
 	}
-	public double getSalary() {
-		return salary;
-	}
-	public void setSalary(double salary) {
-		this.salary = salary;
-	}
+	
 	public Set<Report> getReports() {
 		return reports;
 	}

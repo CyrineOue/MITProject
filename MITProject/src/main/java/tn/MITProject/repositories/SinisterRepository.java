@@ -33,6 +33,9 @@ public interface SinisterRepository extends JpaRepository<Sinister, Long> {
 			+ "where s.idSinister= :idSinister")
 	Contract retrieveContract(@Param("idSinister") Long idSinister);
 	
+	@Query("SELECT count(s) FROM Sinister s WHERE s.declarationDate between :from and :to ")
+	Long countSinistersNbr(@Param("from") Date from, @Param("to") Date to);
+	
 	
 
 }

@@ -26,7 +26,6 @@ public class Expert implements Serializable{
 	private String name;
 	private String lastName;
 	private long phoneNb;
-	private double salary;
 	private String expertiseField;
 	
 	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
@@ -84,12 +83,7 @@ public class Expert implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public double getSalary() {
-		return salary;
-	}
-	public void setSalary(double salary) {
-		this.salary = salary;
-	}
+	
 	
 
 

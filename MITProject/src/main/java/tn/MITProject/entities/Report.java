@@ -15,6 +15,7 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="Report")
@@ -45,6 +46,7 @@ public class Report implements Serializable{
 	private String monthParticularClient;
     
     @ManyToOne
+    @JsonIgnore
 	private Admin admin;
 	public long getIdReport() {
 		return idReport;

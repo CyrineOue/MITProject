@@ -26,7 +26,8 @@ public interface CompanyClientService {
 	
 	float scoreCompanyClient(Long id);
 	
-	int CategoriyCompanyClient(Long idClient); 
+	void CategoriseCompanyClient ();
+	
 	
 	
 

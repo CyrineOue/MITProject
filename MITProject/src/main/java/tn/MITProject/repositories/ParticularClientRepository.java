@@ -14,7 +14,7 @@ public interface ParticularClientRepository extends CrudRepository<ParticularCli
 	@Query("SELECT p FROM ParticularClient p WHERE p.CategoriyParticularClient(p.idClientP)= :cat ")
 	ParticularClient IdealParticularClient(@Param("cat") int cat);
 	
-	@Query("SELECT p FROM CompanyClient p WHERE p.sbuscriptionDate between :from  and :to  and p.archived=false ")
+	@Query("SELECT p FROM CompanyClient p WHERE p.subscriptionDate between :from  and :to  and p.archived=false ")
 	List<ParticularClient> retrieveParticularClientsBySbuscriptionDate(@Param("from") Date from, @Param("to") Date to);
 
 }

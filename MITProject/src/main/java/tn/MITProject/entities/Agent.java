@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,9 +28,16 @@ public class Agent implements Serializable{
 	private String Name;
 	private String LastName;
 	private Long PhoneNb;
-	private double salary;
 	private Long ContractsNb;
+	@Enumerated(EnumType.STRING)
+    private Gender genre;
 	
+	public Gender getGenre() {
+		return genre;
+	}
+	public void setGenre(Gender genre) {
+		this.genre = genre;
+	}
 	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
 	private Log logAgent;
 	
@@ -86,12 +95,7 @@ public class Agent implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public double getSalary() {
-		return salary;
-	}
-	public void setSalary(double salary) {
-		this.salary = salary;
-	}
+	
 	
 	
 	

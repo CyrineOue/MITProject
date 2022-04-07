@@ -1,7 +1,10 @@
 package tn.MITProject.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.lowagie.text.DocumentException;
 
 import tn.MITProject.entities.Report;
 import tn.MITProject.services.ReportService;
@@ -43,7 +48,7 @@ public class ReportController {
 	// http://localhost:8081/mit/report/add-report
 	@PostMapping("/add-report")
 	@ResponseBody
-	public Report addReport(@RequestBody Report r)
+	public Report addReport(HttpServletResponse response,@RequestBody Report r) throws IOException, DocumentException
 	{
 	Report report = reportService.addReport(r);
 	return report;

@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="Product")
 public class Product implements Serializable{
@@ -31,8 +33,10 @@ public class Product implements Serializable{
 	private String Nom;
 	private String Description;
 	
+	@JsonIgnore
 	@OneToMany (mappedBy = "coproduct")
 	private Set<Contract> contracts;
+	@JsonIgnore
 	@ManyToMany
 	private Set<Log> user;
 	

@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 
 import tn.MITProject.entities.ParticularClient;
 import tn.MITProject.entities.Area;
+import tn.MITProject.entities.CategoryClient;
 import tn.MITProject.entities.Log;
 import tn.MITProject.entities.Role;
 import tn.MITProject.repositories.ParticularClientRepository;
+import tn.MITProject.repositories.ContractRepository;
 import tn.MITProject.repositories.LogRepository;
 
 @Service
@@ -26,6 +28,8 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 	LogRepository logrepository;
 	@Autowired
 	ContractService contractService;
+	@Autowired
+	ContractRepository contractRepository;
 	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
 
@@ -160,16 +164,35 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 	}
 
 	@Override
-	public int CategoriyParticularClient(Long idClient) {
-		if (scoreParticularClient(idClient)>0.5)
-			return 1; 
-		else 
-			if (scoreParticularClient(idClient)>0.25)
-				return 2;
+	public float EvaluateClaimsAmount(Long idClient) {
+		float rapport =contractRepository.TotalParticularRefundAmount(idClient)/contractRepository.TotalParticularCeillingAmount(idClient);
+		if (rapport<0.25f)
+			return 1f;
+		else {
+			if (rapport <0.5f)
+				return 0.5f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public void categoriseParticularClient() {
+		for (ParticularClient c : particularclientrepository.findAll() ) {
+			
+			if (scoreParticularClient(c.getIdClientP())>0.5) {
+				c.setCategoryP(CategoryClient.TOP);
+			}
 			else 
-				return 3;
+				if(scoreParticularClient(c.getIdClientP())>0.25) {
+					c.setCategoryP(CategoryClient.MEDIUM);
+				}
+				else
+					c.setCategoryP(CategoryClient.LOW);
+		}
 		
 	}
+
+	
 	
 	
 

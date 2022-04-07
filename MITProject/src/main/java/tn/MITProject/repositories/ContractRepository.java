@@ -1,5 +1,6 @@
 package tn.MITProject.repositories;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -17,18 +18,32 @@ public interface ContractRepository extends CrudRepository<Contract, Long> {
 	
 	
 	@Query("SELECT c FROM Contract c ")
-	List<Contract> ViewContracts();
+	Contract ViewContracts();
+	
+	@Query("SELECT count(c) FROM Contract c WHERE c.IDClientP= : idClientP ")
+	int CountContractsforClientP(@Param("idClientP") Long idClientP);
+	
+	
+	@Query("SELECT count(c) FROM Contract c WHERE c.IDClientC= : idClientC ")
+	int CountContractsforClientC(@Param("idClientC") Long idClientC);
+
+
+	@Query("SELECT c FROM Contract c WHERE c.EndDate between :from and :to ")
+	List<Contract> retrieveContractByEndDate(@Param("from") Date from, @Param("to") Date to);
+
+	@Query("SELECT TTCPremium FROM Contract c WHERE c.StartDate between :startDate and :endDate ")
+	float TotalPremium(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+	
+	
+	@Query("SELECT count(c) FROM Contract c WHERE c.CreationDate between :from and :to ")
+	Long countContractsNbr(@Param("from") Date from, @Param("to") Date to);
+
 	
 	@Query("SELECT count(c) FROM Contract c join c.coproduct p join p.user u join u.particularClient pc WHERE pc.idClientP= :idClientP ")
 	int CountParticularClientContracts(@Param("idClientP") Long idClientP);
 	@Query("SELECT count(c) FROM Contract c join c.coproduct p join p.user u join u.companyClient cc WHERE cc.idClientC= :idClientC ")
 	int CountCompanyClientContracts(@Param("idClientC") Long idClientC);
 	
-   /* 
-   * @Query ("SELECT c FROM Contract c WHERE c.IDClient= : idClient ")
-
-   List<Contract> FindContractsByClientId(@Param("idClient") Long idClient);
-   */
 	
    @Query ("SELECT SUM(c.CeillingAmount) FROM Contract c join c.coproduct p join p.user u join u.particularClient pc WHERE pc.idClientP= :idClientP ")
    float TotalParticularCeillingAmount(@Param("idClientP") Long idClientP);
@@ -41,6 +56,8 @@ public interface ContractRepository extends CrudRepository<Contract, Long> {
 
    @Query ("SELECT SUM(s.refundAmount) FROM Sinister s join s.logSinister l join l.companyClient cc WHERE cc.idClientC= :idClientC ")
    float TotalCompanyRefundAmount(@Param("idClientC") Long idClientC);
+   
+   
 
 	
 }

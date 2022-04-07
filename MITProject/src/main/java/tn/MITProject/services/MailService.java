@@ -11,32 +11,40 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import tn.MITProject.entities.MailUser;
+import tn.MITProject.repositories.CompanyClientRepository;
+import tn.MITProject.repositories.ParticularClientRepository;
 
 @Service
 public class MailService {
 	private JavaMailSender javaMailSender;
 	@Autowired
+	
 	public MailService(JavaMailSender javaMailSender) {
 		this.javaMailSender = javaMailSender;
 	}
-	
-	public void sendEmail(MailUser user) throws MailException {
+
+	@Autowired
+	CompanyClientRepository companyClientRepository;
+	@Autowired
+	ParticularClientRepository particularClientRepository;
+	public void ConfirmByMail(String email) throws MailException {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		
-		mail.setTo(user.getEmailAddress());
-		mail.setSubject("MIT");
-		mail.setText("Dear Client ! This is a kind reminder to pay your fees. Have a good day");
-		javaMailSender.send(mail);
+			mail.setTo(email);
+			mail.setSubject("MIT");
+			mail.setText("Dear Client, This is a mail confirming your subscription in MIT. "
+					+ "Have a good day "
+	);
+			javaMailSender.send(mail);
 	}
 	
-	public void sendEmailWithAttachment(MailUser user) throws MailException, MessagingException {
+	public void sendEmailWithAttachment(String email) throws MailException, MessagingException {
 
 		MimeMessage message = javaMailSender.createMimeMessage();
 
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-		helper.setTo(user.getEmailAddress());
+		helper.setTo(email);
 		helper.setSubject("MIT");
 		helper.setText("Please find the attached document below.");
 
@@ -46,5 +54,6 @@ public class MailService {
 
 		javaMailSender.send(message);
 	}
+
 
 }

@@ -27,7 +27,7 @@ public class Payment implements Serializable{
 	private String Method;
 	@Temporal (TemporalType.DATE)
 	private Date PaymentDate;
-	private double PaidPremium;
+	private float PaidPremium;
 	private float RemainingPremium;
 	private float RefundAmount;
 	private boolean Status;
@@ -54,10 +54,10 @@ public class Payment implements Serializable{
 	public void setPaymentDate(Date paymentDate) {
 		PaymentDate = paymentDate;
 	}
-	public double getPaidPremium() {
+	public float getPaidPremium() {
 		return PaidPremium;
 	}
-	public void setPaidPremium(double paidPremium) {
+	public void setPaidPremium(float paidPremium) {
 		PaidPremium = paidPremium;
 	}
 	public float getRemainingPremium() {

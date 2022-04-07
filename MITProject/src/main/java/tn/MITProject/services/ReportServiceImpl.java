@@ -17,9 +17,11 @@ import tn.MITProject.repositories.AgentRepository;
 import tn.MITProject.repositories.CompanyClientRepository;
 import tn.MITProject.repositories.ContractRepository;
 import tn.MITProject.repositories.ExpertRepository;
+import tn.MITProject.repositories.LogRepository;
 import tn.MITProject.repositories.ParticularClientRepository;
 import tn.MITProject.repositories.PaymentRepository;
 import tn.MITProject.repositories.ReportRepository;
+import tn.MITProject.repositories.SinisterRepository;
 
 @Service
 public class ReportServiceImpl implements ReportService{
@@ -29,9 +31,15 @@ public class ReportServiceImpl implements ReportService{
 	@Autowired
 	ContractRepository contractrepository;
 	@Autowired
+	SinisterRepository sinisterrepository;
+	@Autowired
 	PaymentRepository paymentrepository;
 	@Autowired
+	LogRepository logRepository;
+	@Autowired
 	AdminRepository adminrepository;
+	@Autowired
+	AdminService adminservice;
 	@Autowired
 	AgentRepository agentrepository;
 	@Autowired
@@ -47,6 +55,9 @@ public class ReportServiceImpl implements ReportService{
 	@Autowired
 	CompanyClientRepository companyClientRepository;
 
+	
+		
+	
 	@Override
 	public List<Report> retrieveAllReports() {
 		return (List<Report>) reportrepository.findAll();
@@ -58,7 +69,10 @@ public class ReportServiceImpl implements ReportService{
 		r.setNetIncome(calculateNetIncome(r, r.getStartDate(), r.getEndDate()));
 		r.setNetIncomeMargin(calculateNetIncomeMargin(r));
 		r.setMonthCompanyClient(bestCompanyClient(r.getStartDate(), r.getEndDate()));
-		r.setMonthParticularClient(bestParticularClient(r.getStartDate(), r.getEndDate()));
+		//r.setMonthParticularClient(bestParticularClient(r.getStartDate(), r.getEndDate()));
+		r.setNbContracts(contractrepository.countContractsNbr(r.getStartDate(), r.getEndDate()));
+		r.setNbSinisters(sinisterrepository.countSinistersNbr(r.getStartDate(), r.getEndDate()));
+		r.setAdmin(adminservice.retrieveConnectedAdmin());
 		reportrepository.save(r);
 		return r;
 	}
@@ -89,7 +103,7 @@ public class ReportServiceImpl implements ReportService{
 		for(Contract c: contract) {
 			turnover+=paymentrepository.getPaidPremium(c.getIDContract(), startDate, endDate);		
 		}
-	    return turnover;
+	    return Math.round(turnover*100.0)/100.0;
 	}
 
 	@Override
@@ -104,13 +118,14 @@ public class ReportServiceImpl implements ReportService{
 		else {
 			NetIncome += profit;
 		}
-		return NetIncome;
+		return Math.round(NetIncome*100.0)/100.0;
 	}
+	
 	
 	@Override
 	public double calculateNetIncomeMargin(Report r) {
 		double NetIncomeMargin=(r.getNetIncome()/r.getTurnover())*100;
-		return NetIncomeMargin;
+		return  Math.round(NetIncomeMargin*100.0)/100.0;
 	}
 
 	@Override
@@ -138,21 +153,21 @@ public class ReportServiceImpl implements ReportService{
 				score=particularClientService.scoreParticularClient(pc.getIdClientP());
 			}
 		}
-		return bestClient.getIdClientP()+bestClient.getFirstName()+bestClient.getLastName();
+		return bestClient.getIdClientP() + bestClient.getFirstName() + bestClient.getLastName();
 	}
 	
 	@Override
 	public String bestCompanyClient(Date startDate,Date endDate) {
 		float score=0;
 		CompanyClient bestClient=null;
-		List<CompanyClient> cClients=companyClientService.retrieveAllCompanyClients();/*companyClientRepository.retrieveCompanyClientsBySbuscriptionDate(startDate, endDate)*/;
+		List<CompanyClient> cClients=/*companyClientService.retrieveAllCompanyClients();*/companyClientRepository.retrieveCompanyClientsBySbuscriptionDate(startDate, endDate);
 		for(CompanyClient cc:cClients ) {
 			if(companyClientService.scoreCompanyClient(cc.getIdClientC())>score) {
 			    bestClient=cc;
 				score=companyClientService.scoreCompanyClient(cc.getIdClientC());
 			}
 		}
-		return bestClient.getIdClientC()+bestClient.getBrand();
+		return bestClient.getIdClientC() + bestClient.getBrand();
 	}
 
 

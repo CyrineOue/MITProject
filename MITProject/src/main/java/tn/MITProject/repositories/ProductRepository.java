@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import tn.MITProject.entities.Contract;
 import tn.MITProject.entities.Product;
 import tn.MITProject.entities.Type;
 
@@ -23,5 +24,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	
 	@Query("FROM Product p WHERE p.TypeProduit = :TypeProduit")
 	 List<Product> countProductByType(@Param(value = "TypeProduit") Type TypeProduit);
+	
+	@Query("FROM Contract c WHERE c.coproduct.IDProduct = :idprod")
+	 List <Contract> countContractByProduct(@Param(value ="idprod") Long idprod);
 
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +74,14 @@ public class AdminServiceImpl implements AdminService {
 	public Admin retrieveAdmin(Long id) {
 		return adminrepository.findById(id).orElse(null);
 	
+	}
+	
+	@Override
+	public Admin retrieveConnectedAdmin(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String currentPrincipalName = authentication.getName();
+	    Admin a=adminrepository.retrieveAdminByEmail(currentPrincipalName);
+	    return a;
 	}
 
 }

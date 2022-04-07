@@ -16,8 +16,9 @@ public interface CompanyClientRepository extends CrudRepository<CompanyClient, L
 	@Query("SELECT c FROM CompanyClient c WHERE c.CategoriyCompanyClient(c.idClientC)= :cat ")
 	CompanyClient IdealCompanyClient(@Param("cat") int cat); 
 	
-	@Query("SELECT c FROM CompanyClient c WHERE c.sbuscriptionDate between :from  and :to  and c.archived=false ")
+	@Query("SELECT c FROM CompanyClient c WHERE c.subscriptionDate between :from  and :to  and c.archived=false ")
 	List<CompanyClient> retrieveCompanyClientsBySbuscriptionDate(@Param("from") Date from, @Param("to") Date to);
-
+	
+	
  
 }

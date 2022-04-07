@@ -19,5 +19,13 @@ public interface PaymentRepository extends CrudRepository<Payment, Long> {
 	@Query("SELECT SUM(PaidPremium) FROM Payment p WHERE p.copayment.IDContract= :IDContract and p.Status=true "
 			+ "and p.PaymentDate between :startDate and :endDate ")
 	double getPaidPremium(@Param("IDContract") Long IDContract,@Param("startDate") Date startDate,@Param("endDate") Date endDate);
+	
+	@Query("SELECT p FROM Payment p WHERE p.copayment.IDContract= :IDContract")
+	List<Payment> retrievePaymentByContract(@Param("IDContract") Long IDContract);
+	
+	
+	@Query("SELECT SUM(p.PaidPremium) FROM Payment p join Contract c on p.copayment.IDContract=c.IDContract "
+			+ "WHERE p.PaymentDate between :startDate and :endDate and p.Status=true ")
+	float RemainigAmountbetweentwodates(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 }

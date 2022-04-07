@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tn.MITProject.entities.CompanyClient;
 import tn.MITProject.services.CompanyClientService;
+import tn.MITProject.services.MailService;
 
 @RestController
 @RequestMapping("/companyclient")
@@ -22,6 +23,8 @@ public class CompanyClientController {
 	
 	@Autowired
 	CompanyClientService companyclientService;
+	@Autowired 
+	MailService mailService;
 
 	// http://localhost:8081/mit/companyclient/retrieve-all-companyclients
 	@GetMapping("/retrieve-all-companyclients")
@@ -44,6 +47,7 @@ public class CompanyClientController {
 	public CompanyClient addCompanyClient(@RequestBody CompanyClient c)
 	{
 	CompanyClient companyclient = companyclientService.addCompanyClient(c);
+	
 	return companyclient;
 	}
 	
@@ -56,16 +60,15 @@ public class CompanyClientController {
 	}
 	
 	// http://localhost:8081/Achat/companyclient/remove-companyclient/{companyclient-id}
-	@DeleteMapping("/remove-companyclient/{companyclient-id}")
+	@DeleteMapping("/archive-companyclient/{companyclient-id}")
 	@ResponseBody
-	public void removeCompanyClient(@PathVariable("companyclient-id") Long companyclientId) {
+	public void archiveCompanyClient(@PathVariable("companyclient-id") Long companyclientId) {
 	companyclientService.deleteCompanyClient(companyclientId);
 	}
 	
-	@GetMapping("/score-companyClient/{companyClient-id}")
-	// http://localhost:8086/MITMVC/CompanyClient/score-companyClient/{companyClient-id}
+	@GetMapping("/score-companyClient/{companyclient-id}")
 	@ResponseBody
-	public float getScoreCompanyClient(@PathVariable("companyClient-id") Long companyClientId) {
+	public float getScoreCompanyClient(@PathVariable("companyclient-id") Long companyClientId) {
 	return companyclientService.scoreCompanyClient(companyClientId);
 	}
 

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import tn.MITProject.entities.Agent;
+import tn.MITProject.entities.Gender;
 import tn.MITProject.entities.Log;
 import tn.MITProject.entities.Role;
 import tn.MITProject.repositories.AgentRepository;
@@ -49,13 +50,33 @@ public class AgentServiceImpl implements AgentService {
 	public void deleteAgent(Long id) {
 		agentrepository.deleteById(id);
 	}
+	
+	@Override
+	public void updateAgent(Long IDAgent ,Agent A) {
+		// TODO Auto-generated method stub
+		Agent aa = agentrepository.findById(IDAgent).get();
+		Log log= updateLog(aa);
+		aa.setLogAgent(log);
+		aa.setLastName(A.getLastName());
+		aa.setName(A.getName());
+		aa.setContractsNb(A.getContractsNb());
+		aa.setPhoneNb(A.getPhoneNb());
 
-	@Transactional
-	public Agent updateAgent(Agent a) {
-		Log log= updateLog(a);
-		a.setLogAgent(log);
-		agentrepository.save(a);
-		return a;
+		agentrepository.save(aa);
+		
+	}
+	
+	@Override
+	public int getAgentByGenre(Gender genre) {
+		return agentrepository.getAgentByGenre(genre);
+	}
+	
+	@Override
+	public List<Agent> search(String keyword) {
+		if (keyword != null) {
+            return agentrepository.search(keyword);
+        }
+        return (List<Agent>) agentrepository.findAll();
 	}
 	
 	private Log updateLog(Agent a){
@@ -71,4 +92,7 @@ public class AgentServiceImpl implements AgentService {
 		return agentrepository.findById(id).orElse(null);
 	}
 
+
 }
+
+

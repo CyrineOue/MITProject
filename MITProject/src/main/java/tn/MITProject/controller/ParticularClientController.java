@@ -3,7 +3,6 @@ package tn.MITProject.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.MITProject.entities.ParticularClient;
+import tn.MITProject.services.MailService;
 import tn.MITProject.services.ParticularClientService;
 
 @RestController
@@ -22,6 +22,8 @@ public class ParticularClientController {
 	
 	@Autowired
 	ParticularClientService particularclientService;
+	@Autowired
+	MailService mailService;
 
 	// http://localhost:8081/mit/particularclient/retrieve-all-particularclients
 	@GetMapping("/retrieve-all-particularclients")
@@ -44,6 +46,7 @@ public class ParticularClientController {
 	public ParticularClient addParticularClient(@RequestBody ParticularClient p)
 	{
 	ParticularClient particularclient = particularclientService.addParticularClient(p);
+	mailService.ConfirmByMail(p.getLogClientP().getEmail());
 	return particularclient;
 	}
 	
@@ -56,10 +59,9 @@ public class ParticularClientController {
 	}
 	
 	// http://localhost:8081/Achat/particularclient/remove-particularclient/{particularclient-id}
-	@DeleteMapping("/remove-particularclient/{particularclient-id}")
+	@PutMapping("/remove-particularclient/{particularclient-id}")
 	@ResponseBody
 	public void removeParticularClient(@PathVariable("particularclient-id") Long particularclientId) {
 	particularclientService.deleteParticularClient(particularclientId);
 	}
-
 }

@@ -14,4 +14,7 @@ public interface AdminService {
 	Admin updateAdmin (Admin a);
 
 	Admin retrieveAdmin (Long id);
+	
+	Admin retrieveConnectedAdmin();
+
 }

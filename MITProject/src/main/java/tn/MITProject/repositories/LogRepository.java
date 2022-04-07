@@ -23,5 +23,7 @@ public interface LogRepository extends CrudRepository<Log, Long> {
 	Long findExpert(@Param("idExpert") Long idExpert);
 	
 	
+	
+	
 
 }

@@ -41,6 +41,9 @@ public class Contract implements Serializable{
 	private int InstallmentsNB;
 	@Enumerated(EnumType.STRING)
 	private Status Costatus;
+	private String Method;
+	private Long IDClientP;
+	private Long IDClientC;
 	@ManyToOne
 	private Product coproduct;
 	@OneToMany (mappedBy = "copayment")
@@ -135,6 +138,24 @@ public class Contract implements Serializable{
 	}
 	public void setInstallmentsNB(int installmentsNB) {
 		InstallmentsNB = installmentsNB;
+	}
+	public String getMethod() {
+		return Method;
+	}
+	public void setMethod(String method) {
+		Method = method;
+	}
+	public Long getIDClientP() {
+		return IDClientP;
+	}
+	public void setIDClientP(Long iDClientP) {
+		IDClientP = iDClientP;
+	}
+	public Long getIDClientC() {
+		return IDClientC;
+	}
+	public void setIDClientC(Long iDClientC) {
+		IDClientC = iDClientC;
 	}
 	
 }

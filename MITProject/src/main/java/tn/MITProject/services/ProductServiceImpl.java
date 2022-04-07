@@ -1,13 +1,16 @@
 package tn.MITProject.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tn.MITProject.entities.Contract;
 import tn.MITProject.entities.Log;
 import tn.MITProject.entities.Product;
 import tn.MITProject.entities.Type;
+import tn.MITProject.repositories.ContractRepository;
 import tn.MITProject.repositories.LogRepository;
 import tn.MITProject.repositories.ProductRepository;
 
@@ -18,6 +21,11 @@ public class ProductServiceImpl implements ProductService {
 	ProductRepository productrepository;
 	@Autowired
 	LogRepository logrepository;
+	LogService logservice;
+	@Autowired
+	ContractRepository contractrepository;
+	ContractService contractService;
+	AdminService adminservice;
 
 	@Override
 	public List<Product> retrieveAllProducts() {
@@ -89,10 +97,7 @@ public class ProductServiceImpl implements ProductService {
 		 int countProductByType =  listProductByType.size();
 		return countProductByType;	
 	}
-	//@Override
-	//public void assignedProductToPClientCC(Long IDProduct, Long idClientC) {
-	    //productrepository.insertProductClientC(IDProduct, idClientC);
-
+	
 	@Override
 	public List<Product> findProductByType(Type TypeProduit) {
 		List<Product> listProductByType =  productrepository.findProductByType(TypeProduit);
@@ -100,6 +105,120 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	
+	@Override
+	public int countContractByProduct(Long idprod) {
+		List<Contract> listContractByProduct = productrepository.countContractByProduct(idprod);
+		int  countContractByProduct = listContractByProduct.size();
+		return countContractByProduct;
+	}
+	
+	@Override
+	public Product BestSellerProduct() {
+		
+		List<Contract> contracts = (List<Contract>) contractrepository.findAll();
+		ArrayList <Long> list = new ArrayList<Long>();
+		
+		for(Contract c  :contracts)
+		{	
+			 list.add(c.getCoproduct().getIDProduct());
+		}
+		
+		Long x = MaxRepeatingElement(list);
+		
+		List<Product> products = (List<Product>) productrepository.findAll();
+		
+		for(Product p  :products)
+		{	
+			 if(p.getIDProduct() == x)
+				 return p;
+		}
+		
+		
+		
+		return null ;
+		
+	}
+	
+	
+	public Long MaxRepeatingElement(ArrayList<Long> list){
+		
+		 int maxCounter = 0;
+		 Long element= (long) 0;
+		 for (int i = 0; i <list.size() ; i++) {
+		 int counter =1;
+		 for (int j = i+1; j <list.size() ; j++) {
+		 if(list.get(i)==list.get(j)){
+		 counter++;
+		 }
+		 }
+		 if(maxCounter<counter){
+		 maxCounter=counter;
+		 element = list.get(i);
+		 }
+		  }
+		 return element;
+		 //System.out.println("Element repeating maximum no of times: " + element + ", maximum count: " + maxCounter);
+		 }
+	
+	
+	@Override
+	public Product WorstSellerProduct() {
+		
+		List<Contract> contracts = (List<Contract>) contractrepository.findAll();
+		ArrayList <Long> list = new ArrayList<Long>();
+		
+		for(Contract c  :contracts)
+		{	
+			 list.add(c.getCoproduct().getIDProduct());
+		}
+		
+		Long x = MinRepeatingElement(list);
+		
+		List<Product> products = (List<Product>) productrepository.findAll();
+		
+		for(Product p  :products)
+		{	
+			 if(p.getIDProduct() == x)
+				 return p;
+		}
+		
+		
+		
+		return null ;
+		
+	}
+	
+	public Long MinRepeatingElement(ArrayList<Long> list)
+    {
+         
+  
+        int min_count = list.size()+1;
+		Long res = (long) -1;
+        int curr_count = 1;
+         
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i) == list.get(i-1))
+                curr_count++;
+            else {
+                if (curr_count < min_count) {
+                    min_count = curr_count;
+                    res = list.get(i - 1);
+                }
+                curr_count = 1;
+            }
+        }
+        if (curr_count < min_count)
+        {
+            min_count = curr_count;
+            res = list.get(list.size() - 1);
+        }
+     
+        return res;
+    }
+	
+	
+	
+
 	@Override
 	public Double AHIPremimumCalculation(Double fieldValue, String location ,Long fieldSize) {
 		
@@ -151,6 +270,8 @@ public class ProductServiceImpl implements ProductService {
 				return liveStockValue * liveStockNumber * 0.0035;
 			case"P":
 				return liveStockValue * liveStockNumber * 0.0075;
+				
+				
 			
 		}
 		return 0.0;
@@ -159,11 +280,26 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Double SBFIPremimumCalculation(Double propertyValue, Long sizeProperty) {
-		if(sizeProperty <= 15)
+		Contract c = new Contract();
+		if(sizeProperty <= 15) {
+			c.setNetPremium((float) (propertyValue * 0.0045));
+			contractrepository.save(c);
+			System.out.println("b");
 			return propertyValue * 0.0035;
-		else if(sizeProperty >15 && sizeProperty <= 35)
+			
+		}
+			
+		else if(sizeProperty >15 && sizeProperty <= 35) {
+			c.setNetPremium((float) (propertyValue * 0.0045));
+			contractrepository.save(c);
+			System.out.println("b");
 			return propertyValue * 0.0045;
+		}
+			
 		else
+			c.setNetPremium((float) (propertyValue * 0.0045));
+			contractrepository.save(c);
+			System.out.println("b");
 			return propertyValue * 0.0055;
 	}
 

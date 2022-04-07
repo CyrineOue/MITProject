@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import tn.MITProject.entities.Area;
+import tn.MITProject.entities.CategoryClient;
 import tn.MITProject.entities.CompanyClient;
 import tn.MITProject.entities.Log;
 import tn.MITProject.entities.Role;
@@ -191,21 +192,24 @@ public class CompanyClientServiceImpl implements CompanyClientService {
 			
 	}
 
-	@Override
-	public int CategoriyCompanyClient(Long idClient) {
-		if (scoreCompanyClient(idClient)>0.5) {
-			//System.out.println("Ce client fait partie de la meilleure catégorie : 1");
-			return 1; 
+	//@Scheduled(cron = "*/30 * * * * *" )
+		// @Scheduled(cron="0 8 1 * * *")
+		@Override
+		public void CategoriseCompanyClient() {
+		for (CompanyClient c : companyclientrepository.findAll() ) {
+			
+			if (scoreCompanyClient(c.getIdClientC())>0.5) {
+				c.setCategoryC(CategoryClient.TOP);
+			}
+			else 
+				if(scoreCompanyClient(c.getIdClientC())>0.25) {
+					c.setCategoryC(CategoryClient.MEDIUM);
+				}
+				else
+					c.setCategoryC(CategoryClient.LOW);
 		}
-		else 
-			if (scoreCompanyClient(idClient)>0.25) {
-				//System.out.println("Ce client fait partie de la catégorie moyenne: 2");
-				return 2; }
-			else {
-				//System.out.println("Ce client fait partie de la faible catégorie : 3");
-				return 3; }
 		
-	}
+		}
 
 	
 

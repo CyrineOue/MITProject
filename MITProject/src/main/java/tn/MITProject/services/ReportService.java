@@ -3,7 +3,6 @@ package tn.MITProject.services;
 import java.util.Date;
 import java.util.List;
 
-
 import tn.MITProject.entities.Report;
 
 public interface ReportService  {
@@ -20,7 +19,5 @@ public interface ReportService  {
 	double calculateNetIncomeMargin(Report r);
 	String bestCompanyClient(Date startDate,Date endDate);
 	String bestParticularClient(Date startDate,Date endDate);
-
-
 
 }
