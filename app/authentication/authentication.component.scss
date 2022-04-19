@@ -1,0 +1,42 @@
+label {
+    font-weight: bold;
+    font-size: 17px;
+    color: rgb(228, 88, 135);
+}
+
+fieldset {
+    width: 30%;
+    margin: auto;
+    display: block;
+    text-align: center;
+    margin-left: 500px;
+    margin-top: 50px;
+}
+
+.form {
+    height: 30px;
+    width: 300px;
+    border-radius: 4px; 
+}
+
+.button
+{ 
+    padding:11px;
+    margin: 20px;
+    font-size:17px;
+    font-style: italic;
+    border-radius:9px;
+    border:.3em;
+    color:rgb(228, 88, 135);
+}
+.button:hover{
+    background-color: rgb(92, 66, 79);
+    color: white;
+}
+
+p{
+    text-align: center;
+    color: white;
+    font-family: 'Trebuchet MS';
+    font-size: 25px;
+}
