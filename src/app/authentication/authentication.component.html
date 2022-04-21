@@ -1,0 +1,21 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>
+        Contact |Par ici , Par là
+    </title>
+</head>
+
+<body> 
+    <form action="" method="post">
+        <p>Enter the email address associated with your MIT account. </p>
+    <fieldset >
+        <label for="email">E-mail:</label><br>
+        <input type="email" name="email" id="email" placeholder="E-mail" class="form" [(ngModel)]="email"><br><br>
+        <label for="mdp"> Password:</label><br>
+        <input type="password" name="mdp" id="mdp" class="form" [(ngModel)]="password"><br><br> 
+        <input type="button" value="Submit" class="button" (click)="login()">
+		<input type="reset" value="Reset" class="button">
+    </fieldset>
+    </form>
+</body>
