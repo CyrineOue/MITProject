@@ -14,7 +14,7 @@
         <input type="email" name="email" id="email" placeholder="E-mail" class="form" [(ngModel)]="email"><br><br>
         <label for="mdp"> Password:</label><br>
         <input type="password" name="mdp" id="mdp" class="form" [(ngModel)]="password"><br><br> 
-        <input type="button" value="Submit" class="button" (click)="login()">
+        <input type="button" value="Submit" class="button" (click)=checkLogin()>
 		<input type="reset" value="Reset" class="button">
     </fieldset>
     </form>
