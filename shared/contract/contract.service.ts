@@ -29,4 +29,6 @@ export class ContractService {
         const url='http://localhost:8087/MITMVC/Contract/remove-Contract/'+id;
         return this.httpClient.delete<Contract>(url);
         }
+        
+        
 }
