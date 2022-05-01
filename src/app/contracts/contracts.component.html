@@ -1,1 +1,177 @@
-<p>contracts works!</p>
+<div class=" content">
+  <div class=" row">
+    <div class=" col-md-12">
+      <div class=" card">
+        <div class=" card-header">
+          <h4 class=" card-title">My Contracts</h4>
+        </div>
+        <div class=" card-body">
+          <div class=" table-responsive">
+            <table class=" table tablesorter" id="">
+              
+                  <th>Id</th>
+                  <th>Method</th>
+                  <th>TTC Premium</th>
+                  <th>Installments</th>
+                  <th>Status</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Button</th>
+
+              <tbody>
+                
+                  <tr *ngFor="let c of listContracts">
+                      <td>{{c.idcontract}} </td>
+                      <td>{{c.method}}</td>
+                      <td>{{c.ttcpremium}}</td>
+                      <td>{{c.installmentsNB}}</td>
+                      <td>{{c.costatus}}</td>
+                      <td>{{c.startDate}}</td>
+                      <td>{{c.endDate}}</td>
+                      <td><button type="button" class="btn btn-outline-primary"
+                              (click)="open(mymodal)">edit</button>
+                          <ng-template #mymodal let-modal>
+                              <div class="modal-header">
+                                  <h4 class="modal-title" id="modal-basic-title">Edit</h4>
+                                  <button type="button" class="close" aria-label="Close"
+                                      (click)="modal.dismiss('Cross click')">
+                                      <span aria-hidden="true" (click)="cancel()">×</span>
+
+                                  </button>
+
+                              </div>
+                              <div>
+                              <form>
+                                  <div class="modal-body">
+                                    <div class="row" class="col-md-5">
+                                      <input type="text" placeholder="Client " [(ngModel)]="contract.idclientC"
+                                          [ngModelOptions]="{standalone : true}">
+                                  </div>
+                                  <div class="row" class="col-md-5">
+                                    <label>ID</label>
+                                    <input type="text" [(ngModel)]="c.idcontract" [ngModelOptions]="{standalone : true}" />
+                                </div>
+                                   <div class="row" class="col-md-5">
+                                              <input type="date" placeholder="startDate" [(ngModel)]="contract.startDate"
+                                                  [ngModelOptions]="{standalone : true}">
+                                          </div>
+                                          <div class="row" class="col-md-5">
+                                              <input type="date" placeholder="endDate" [(ngModel)]="contract.endDate"
+                                                  [ngModelOptions]="{standalone : true}">
+                                          </div>
+                                          <div class="row" class="col-md-5">
+                                              <input type="number" placeholder="Installments" [(ngModel)]="contract.installmentsNB"
+                                                  [ngModelOptions]="{standalone : true}">
+                                          </div>
+                                      
+                                     
+                                  </div>
+
+                                  <div class="modal-footer">
+
+                                      <button type="button" class="btn btn-info"
+                                          (click)="modal.close('Save click')" (click)="cancel()">Cancel</button>
+                                      <button class="btn btn-success"(click)="editContract(c)" (click)="modal.close('Save click')">Validate</button>
+                                  </div>
+                              </form>
+                          </div>
+                          </ng-template>
+                          <button type="button" class="btn btn-outline-danger"
+                              (click)="deleteContract(c.idcontract)">delete</button>
+                             
+                              <button type="button" class="btn btn-outline-primary" (click)="open(mymodal2)">Pay Online</button>
+
+                              <ng-template #mymodal2 let-modal2>
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="modal-basic-title" >Enter your Credit Card information and pay in a secure way</h4>
+                                    <button type="button" class="close" aria-label="Close" (click)="modal2.dismiss('Cross click')">
+                                        <span aria-hidden="true" (click)="cancel()">×</span>
+                                    </button>
+                      
+                                </div>
+                                <div class="center">
+                                  <form>
+                                    <div class="row" class="col-md-5">
+                                    <input type="text" placeholder="Credit Card #" name="cardNumber">
+                                  </div>
+                                  <div class="row" class="col-md-5">
+                                    <input type="text" placeholder="Expiration Month" name="expMonth">
+                                  </div>
+                                  <div class="row" class="col-md-5">
+                                    <input type="text" placeholder="Expiration Year" name="expYear">
+                                  </div>
+                                  <div class="row" class="col-md-5">
+
+                                    <input type="text" placeholder="CVC" name="cvc">
+                                  </div>
+                                 
+                                    <br>
+                                            <button type="button" class="btn btn-success" (click)="chargeCreditCard()" (click)="modal2.close('Save click')">Pay now</button> 
+                                    <button type="button" class="btn btn-info" (click)="modal2.close('Save click')" >Cancel</button>
+                                </form>
+                            </div>
+                            </ng-template>
+
+
+
+
+                      </td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class=" col-md-12">
+      <div class=" card card-plain">
+        <div class=" card-header">
+          <h4 class=" card-title">Do you want to sign a new Contract with MIT?</h4>
+         
+        </div>
+        
+      </div>
+    </div>
+    <div class="col-md-12">
+      <button class="btn btn-round btn-sm btn-success" (click)="open(mymodal1)">Add new Contract</button>
+      <br><br>
+      <ng-template #mymodal1 let-modal1>
+          <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title" >Add new Contract</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal1.dismiss('Cross click')">
+                  <span aria-hidden="true" (click)="cancel()">×</span>
+              </button>
+
+          </div>
+          <div class="center">
+          <form>
+              <div class="row" class="col-md-6">
+                  <input type="text" placeholder="Client " [(ngModel)]="contract.idclientC"
+                      [ngModelOptions]="{standalone : true}">
+              </div>
+               <div class="row" class="col-md-6">
+                          <input type="date" placeholder="startDate" [(ngModel)]="contract.startDate"
+                              [ngModelOptions]="{standalone : true}">
+                      </div>
+                      <div class="row" class="col-md-6">
+                          <input type="date" placeholder="endDate" [(ngModel)]="contract.endDate"
+                              [ngModelOptions]="{standalone : true}">
+                      </div>
+                      <div class="row" class="col-md-6">
+                          <input type="number" placeholder="Installments" [(ngModel)]="contract.installmentsNB"
+                              [ngModelOptions]="{standalone : true}">
+                      </div>
+                      <div class="row" class="col-md-6">
+                          <input type="number" placeholder="netPremium" [(ngModel)]="contract.netPremium"
+                              [ngModelOptions]="{standalone : true}">
+                      </div>
+              <br>
+                      <button type="button" class="btn btn-success" (click)="addContract(contract)" (click)="modal1.close('Save click')">Add</button> 
+              <button type="button" class="btn btn-info" (click)="modal1.close('Save click')" >Cancel</button>
+          </form>
+      </div>
+      </ng-template>
+      
+  </div>
+</div>
+</div>
