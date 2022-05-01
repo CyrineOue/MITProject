@@ -1,0 +1,85 @@
+<!-- <mat-button-toggle>Toggle me!</mat-button-toggle>
+ -->
+ 
+ <div class=" content">
+    <div class=" row">
+      <div class=" col-md-12">
+        <div class=" card">
+          <div class=" card-header">
+            <h4 class=" card-title">My Payments</h4>
+          </div>
+          
+          <div class=" card-body">
+            <div class=" table-responsive">
+              <table class=" table tablesorter" id="">
+                <thead class=" text-primary">
+                  <tr>
+                    <th>ID Payment</th>
+                    <th>ID Contract</th>
+                    <th>Client</th>
+                    <th>Payment Date</th>
+                    <th>Paid Premium</th>
+                    <th>Remaining Premium</th>
+                    <th>Refund Amount</th>
+
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                    
+                  <tr *ngFor = 'let p of listPayments'>
+                    <td>{{p.idpayment}}</td>
+                    <td>{{p.copayment.idcontract}}</td>
+                    <td>{{p.copayment.idclientC}}</td>
+                    <td>{{p.paymentDate}}</td>
+                    <td>{{p.paidPremium}}</td>
+                    <td>{{p.remainingPremium}}</td>
+                    <td>{{p.refundAmount}}</td>
+                    <td><button type="button" class="btn btn-outline-primary"
+                        (click)="open(mymodal)">edit</button>  
+                        <ng-template #mymodal let-modal>
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="modal-basic-title">Edit</h4>
+                                <button type="button" class="close" aria-label="Close"
+                                    (click)="modal.dismiss('Cross click')">
+                                    <span aria-hidden="true" (click)="cancel()">×</span>
+
+                                </button>
+
+                            </div>
+                            <div>
+                            <form>
+                                <div class="modal-body">
+                                  <div class="row" class="col-md-5">
+                                    <input type="text" placeholder="ID Contract " [(ngModel)]="payment.copayment.idcontract"
+                                        [ngModelOptions]="{standalone : true}">
+                                </div>
+                                <div class="row" class="col-md-5">
+                            
+                                            <input type="text" placeholder="Client" [(ngModel)]="payment.copayment.idclientC"
+                                                [ngModelOptions]="{standalone : true}">
+                                        </div>
+                                       
+                                    
+                                   
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button type="button" class="btn btn-info"
+                                        (click)="modal.close('Save click')" (click)="cancel()">Cancel</button>
+                                    <button class="btn btn-success"(click)="editPayment(p)" (click)="modal.close('Save click')">Validate</button>
+                                </div>
+                            </form>
+                        </div>
+                        </ng-template>
+           
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+                    
+                
+                      
+                        
+                      <button type="button" class="btn btn-outline-primary" (click)="downloadPDF()" onclick="window.location='http://localhost:8087/MITMVC/pdfexport/pdf/generate'">Download your payments</button>
