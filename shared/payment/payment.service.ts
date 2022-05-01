@@ -21,4 +21,20 @@ export class PaymentService {
     }
 
 
+addPayment(payment : Payment) : Observable <Payment>{
+  const id = payment.copayment.IDContract;
+  return this.httpClient.post<Payment>('http://localhost:8087/MITMVC/payment/add-payment/'+id,payment);
+}
+
+   downloadPDF(): any {
+      
+    return this.httpClient.get('http://localhost:8087/MITMVC/pdfexport/pdf/generate');
+        
+  }
+
+
+editPayment(payment : Payment): Observable<Payment> {
+  return this.httpClient.put<Payment>('http://localhost:8087/MITMVC/payment/modify-Payment', payment)
+}
+
 }
