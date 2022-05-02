@@ -1,0 +1,151 @@
+<div class=" content">
+    <button (click)="open(mymodal2)" type="button" class="btn btn-primary">ADD EXPERT</button>
+    <ng-template #mymodal2 let-modal2>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Add Expert</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal2.dismiss('Cross click')">
+                <span aria-hidden="true" (click)="cancel()">×</span>
+
+            </button>
+
+        </div>
+        <div>
+            <form>
+                <div class="modal-body">
+
+                    <div class="row" class="col-md-5">
+                        <label>Name</label>
+                        <input type="text" [(ngModel)]="expert.name" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>LastName</label>
+                        <input type="text" [(ngModel)]="expert.lastName" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>PhoneNb</label>
+                        <input type="text" [(ngModel)]="expert.phoneNb" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>Expertise field</label>
+                        <input type="text" [(ngModel)]="expert.expertiseField" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>E-mail</label>
+                        <input type="email" [(ngModel)]="expert.logExpert.email" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>Password</label>
+                        <input type="password" [(ngModel)]="expert.logExpert.password" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>Active</label>
+                        <input type="text" [(ngModel)]="expert.logExpert.active" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-info" (click)="modal2.close('Save click')"
+                        (click)="cancel()">Cancel</button>
+                    <button class="btn btn-success" (click)="addExpert()"
+                        (click)="modal2.close('Save click')">Validate</button>
+                </div>
+            </form>
+        </div>
+    </ng-template>
+    <div class=" row">
+        <div class=" col-md-12">
+            <div class=" card">
+                <div class=" card-header">
+                    <h4 class=" card-title">Expert Table</h4>
+                </div>
+                <div class=" card-body">
+                    <div class=" table-responsive">
+                        <table class=" table tablesorter" >
+                            <thead class=" text-primary">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>LastName</th>
+                                    <th>PhoneNb</th>
+                                    <th>ContractsNb</th>
+                                    <th>expertiseField</th>
+                                    <th>E-mail</th>
+                                    <th>Active</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor='let e of listExperts'>
+                                    <td>{{e.idexpert}}</td>
+                                    <td>{{e.name}}</td>
+                                    <td>{{e.lastName}}</td>
+                                    <td>{{e.phoneNb}}</td>
+                                    <td>{{e.expertiseField}}</td>
+                                    <td>{{e.logExpert.email}}</td>
+                                    <td>{{e.logExpert.active}}</td>
+                                    <td>
+                                        <button (click)="open(mymodal)" type="button"
+                                            class="btn btn-primary">EDIT EXPERT</button>
+                                        <ng-template #mymodal let-modal>
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="modal-basic-title">Edit Expert</h4>
+                                                <button type="button" class="close" aria-label="Close"
+                                                    (click)="modal.dismiss('Cross click')">
+                                                    <span aria-hidden="true" (click)="cancel()">×</span>
+
+                                                </button>
+
+                                            </div>
+                                            <div>
+                                                <form>
+                                                    <div class="modal-body">
+
+                                                        <div class="row" class="col-md-5">
+                                                            <label>Name</label>
+                                                            <input type="text" [(ngModel)]="e.name" [ngModelOptions]="{standalone : true}"/>
+                                                        </div>
+                                                        <div class="row" class="col-md-5">
+                                                            <label>LastName</label>
+                                                            <input type="text" [(ngModel)]="e.lastName" [ngModelOptions]="{standalone : true}"/>
+                                                        </div>
+                                                        <div class="row" class="col-md-5">
+                                                            <label>PhoneNb</label>
+                                                            <input type="number" [(ngModel)]="e.phoneNb" [ngModelOptions]="{standalone : true}"/>
+                                                        </div>
+                                                        <div class="row" class="col-md-5">
+                                                            <label>expertiseField</label>
+                                                            <input type="text" [(ngModel)]="e.expertiseField" [ngModelOptions]="{standalone : true}"/>
+                                                        </div>
+                                                        <div class="row" class="col-md-5">
+                                                            <label>E-mail</label>
+                                                            <input type="email" [(ngModel)]="e.logExpert.email" [ngModelOptions]="{standalone : true}"/>
+                                                        </div>
+                                                        <div class="row" class="col-md-5">
+                                                            <label>Active</label>
+                                                            <input type="text" [(ngModel)]="e.logExpert.active" [ngModelOptions]="{standalone : true}"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+
+                                                        <button type="button" class="btn btn-info"
+                                                            (click)="modal.close('Save click')"
+                                                            (click)="cancel()">Cancel</button>
+                                                        <button class="btn btn-success" (click)="editExpert(e)"
+                                                            (click)="modal.close('Save click')">Validate</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </ng-template>
+                                        <button (click)="deleteExpert(e.idexpert)" type="button"
+                                            class="btn btn-primary">DELETE EXPERT</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
