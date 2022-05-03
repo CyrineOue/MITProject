@@ -1,0 +1,190 @@
+<div class=" content">
+    <button (click)="open(mymodal1)" type="button" class="btn btn-primary">Add Sinister</button>
+    <ng-template #mymodal1 let-modal1>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Add Sinister</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal1.dismiss('Cross click')">
+                <span aria-hidden="true" (click)="cancel()">×</span>
+
+            </button>
+
+        </div>
+        <div class=" content">
+            <div class=" row">
+              <div class=" col-md-12">
+                <div class=" card">
+                  <div class=" card-header"><h5 class=" title">Sinister Profile</h5></div>
+                  <div class=" card-body"> 
+            <form>
+                    <div class=" row">
+                        <div class=" col-md-5 pr-md-1">
+                          <div class=" form-group">
+                        <label>Type</label>
+                        <select class="form-control"
+                       style="background-color: rgb(197, 197, 200)"
+                       [(ngModel)]="sinister.typeSinister" >
+                        <option >PROPERTY</option>
+                        <option >AGRICULTURE</option>
+                        <option >CREDIT</option>
+                       </select>
+                    </div></div></div>
+                    <div class=" row">
+                        <div class=" col-md-5 pr-md-1">
+                          <div class=" form-group">
+                        <label>Sinister Date</label>
+                        <input type="date"
+                        style="background-color: rgb(197, 197, 200)"
+                         [(ngModel)]="sinister.sinisterDate">
+                    </div></div></div>
+                    <div class=" row">
+                        <div class=" col-md-5 pr-md-1">
+                          <div class=" form-group">
+                        <label>Sinister Location</label>
+                        <input type="text"
+                        class=" form-control"
+                    placeholder="Enter the sinister location"
+                     [(ngModel)]="sinister.sinisterLocation" />
+                    </div></div></div>
+                    <div class=" row">
+                        <div class=" col-md-5 pr-md-1">
+                          <div class=" form-group">
+                        <label>Sinister Description</label>
+                        <input type="text" 
+                        class=" form-control"
+                    placeholder="Enter the sinister description"
+                    [(ngModel)]="sinister.sinisterDescription" />
+                    </div>
+                </div></div>
+            </form>
+                  </div></div></div></div>
+                  <form>
+                <div class="card-footer">
+
+                    <button type="button" class="btn btn-fill btn-danger" (click)="modal1.close('Save click')"
+                        (click)="cancel()">Cancel</button>
+                    <button class="btn btn-fill btn-danger" (click)="addSinister()"
+                        (click)="modal1.close('Save click')">Save</button>
+                </div>
+                </form>
+        </div>
+    </ng-template>
+    <div class=" row">
+        <div class=" col-md-12">
+            <div class=" card">
+                <div class=" card-header">
+                    <h4 class=" card-title">Hope nothing is serious!!</h4>
+                </div>
+                <div class=" card-body">
+                    <div class=" table">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class=" table tablesorter" >
+                            <thead class=" text-primary text-center" >
+                                <tr> 
+                                    <th>Type Of Sinister</th>
+                                    <th>Declaration Date</th>
+                                    <th>Sinister Status</th>
+                                    <th>Sinister Location</th>
+                                    <th>Sinister Description</th>
+                                    <th>Cause Of Rejection</th>
+                                    <th>Refund Percentage</th>
+                                    <th>Refund Amount</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor='let s of listSinisters'>
+                                    <td>{{s.typeSinister}}</td>
+                                    <td>{{s.sinisterDate}}</td>
+                                    <td>{{s.sinisterStatus}}</td>
+                                    <td>{{s.sinisterLocation}}</td>
+                                    <td>{{s.sinisterDescription}}</td>
+                                    <td>{{s.causeOfRejection}}</td>
+                                    <td>{{s.refundPercentage}}</td>
+                                    <td>{{s.refundAmount | currency: 'CAD':'symbol-narrow'}}</td>
+                                    <td>
+                                        <button (click)="open(mymodal)" type="button"
+                                            class="btn btn-fill btn-danger"><i class="fa fa-edit"></i></button>
+                                        <ng-template #mymodal let-modal>
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="modal-basic-title">Edit sinister</h4>
+                                                <button type="button" class="close" aria-label="Close"
+                                                    (click)="modal.dismiss('Cross click')">
+                                                    <span aria-hidden="true" (click)="cancel()">×</span>
+
+                                                </button>
+
+                                            </div>
+                                            <div>
+                                                <div class=" content">
+                                                    <div class=" row">
+                                                      <div class=" col-md-12">
+                                                        <div class=" card">
+                                                          <div class=" card-header"><h5 class=" title">Edit sinister</h5></div>
+                                                          <div class=" card-body">  
+                                                <form>
+                                                        <div class=" row">
+                                                            <div class=" col-md-5 pr-md-1">
+                                                              <div class=" form-group">
+                                                            <label>Type</label>
+                                                            <select class="form-control"
+                       style="background-color: rgb(197, 197, 200)"
+                       [(ngModel)]="sinister.typeSinister" [ngModelOptions]="{standalone : true}" >
+                        <option >PROPERTY</option>
+                        <option >AGRICULTURE</option>
+                        <option >CREDIT</option>
+                       </select>
+                                                              </div></div></div>
+                                                        
+                                                              <div class=" row">
+                                                                <div class=" col-md-5 pr-md-1">
+                                                                  <div class=" form-group">
+                                                            <label>Sinister Date</label>
+                                                            <input class=" form-control" 
+                                                            style="background-color: rgb(197, 197, 200)"
+                                                            type="date" [(ngModel)]="s.sinisterDate"
+                                                                [ngModelOptions]="{standalone : true}" />
+                                                        </div></div></div>
+                                                        <div class=" row">
+                                                            <div class=" col-md-5 pr-md-1">
+                                                              <div class=" form-group">
+                                                            <label>Sinister Location</label>
+                                                            <input  class=" form-control" 
+                                                            placeholder="Enter the sinister location"
+                                                            type="text" [(ngModel)]="s.sinisterLocation"
+                                                                [ngModelOptions]="{standalone : true}" />
+                                                        </div></div></div>
+                                                        <div class=" row">
+                                                            <div class=" col-md-5 pr-md-1">
+                                                              <div class=" form-group">
+                                                            <label>Sinister Description</label>
+                                                            <input type="text"
+                                                            class=" form-control" 
+                                                            placeholder="Enter the sinister description"
+                                                             [(ngModel)]="s.sinisterDescription"
+                                                                [ngModelOptions]="{standalone : true}" />
+                                                        </div>
+                                                    </div></div></form></div></div></div></div></div>
+                                                    <form>
+                                                    <div class="card-footer">
+
+                                                        <button type="button" class="btn btn-fill btn-danger"
+                                                            (click)="modal.close('Save click')"
+                                                            (click)="cancel()">Cancel</button>
+                                                        <button class="btn btn-fill btn-danger" (click)="editSinister(s)"
+                                                            (click)="modal.close('Save click')">Save</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </ng-template>
+                                        <button (click)="deleteSinister(s.idSinister)" type="button"
+                                            class="btn btn-fill btn-danger"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -40,7 +40,8 @@ getAllExperts(){
 }
 
 deleteExpert(id:number){
-  this.expertservice.deleteExpertById(id).subscribe(() => this.getAllExperts);
+  this.expertservice.deleteExpertById(id).subscribe(() => this.listExperts= [(this.expert.idExpert,
+    this.expert),... this.listExperts]);
 }
 
 editExpert(expert: Expert){
