@@ -44,23 +44,27 @@
                               <form>
                                   <div class="modal-body">
                                     <div class="row" class="col-md-5">
-                                      <input type="text" placeholder="Client " [(ngModel)]="contract.idclientC"
+                                      <input type="text" placeholder="Client " [(ngModel)]="c.idclientC"
                                           [ngModelOptions]="{standalone : true}">
                                   </div>
+                                  <div class="row" class="col-md-5">
+                                    <input type="number" placeholder="Installments" [(ngModel)]="c.netPremium"
+                                        [ngModelOptions]="{standalone : true}">
+                                </div>
                                   <div class="row" class="col-md-5">
                                     <label>ID</label>
                                     <input type="text" [(ngModel)]="c.idcontract" [ngModelOptions]="{standalone : true}" />
                                 </div>
                                    <div class="row" class="col-md-5">
-                                              <input type="date" placeholder="startDate" [(ngModel)]="contract.startDate"
+                                              <input type="date" placeholder="startDate" [(ngModel)]="c.startDate"
                                                   [ngModelOptions]="{standalone : true}">
                                           </div>
                                           <div class="row" class="col-md-5">
-                                              <input type="date" placeholder="endDate" [(ngModel)]="contract.endDate"
+                                              <input type="date" placeholder="endDate" [(ngModel)]="c.endDate"
                                                   [ngModelOptions]="{standalone : true}">
                                           </div>
                                           <div class="row" class="col-md-5">
-                                              <input type="number" placeholder="Installments" [(ngModel)]="contract.installmentsNB"
+                                              <input type="number" placeholder="Installments" [(ngModel)]="c.installmentsNB"
                                                   [ngModelOptions]="{standalone : true}">
                                           </div>
                                       
@@ -77,7 +81,7 @@
                           </div>
                           </ng-template>
                           <button type="button" class="btn btn-outline-danger"
-                              (click)="deleteContract(c.idcontract)">delete</button>
+                              (click)="deleteContract(c.idcontract)">Archive</button>
                              
                               <button type="button" class="btn btn-outline-primary" (click)="open(mymodal2)">Pay Online</button>
 

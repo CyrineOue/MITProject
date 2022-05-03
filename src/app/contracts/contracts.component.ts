@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Contract } from 'src/app/model/Contract';
@@ -33,6 +34,7 @@ export class ContractsComponent implements OnInit {
       Method: null, 
       IDClientP: null, 
       IDClientC: null,
+      Payments:null
      
     }
 
@@ -53,7 +55,32 @@ export class ContractsComponent implements OnInit {
   deleteContract(idContract : any){
     this.contractService.deleteContract(idContract).subscribe(() => this.getContracts())
   }
-  chargeCreditCard() {
+  
+
+  // PaymentIntent(){
+
+  // this.contractService.PaymentIntent().subscribe(res => {console.log(res)}); 
+  // }
+
+  // chargeCard(token: string) {
+  //   const headers = new Headers({'token': token, 'amount': 100});
+  //   this.http.post('http://localhost:8087/APIPayment/chargestripe', {}, {headers: headers})
+  //     .subscribe(resp => {
+  //       console.log(resp);
+  //     })
+  //   }
+
+  chargeCard(token: string) {
+    var myFormData = { token: 'token', amount: '1000' };
+    const headers = new HttpHeaders();
+  headers.append('Content-Type', 'application/json');
+      //HTTP POST REQUEST
+      return this.httpClient.post('http://localhost:8087/APIPayment/chargestripe',  { token: 'token', amount: '1000' }, {headers: headers});
+
+
+   }
+  
+  chargeCreditCard(): void {
     let form = document.getElementsByTagName("form")[0];
     (<any>window).Stripe.card.createToken({
       number: form.cardNumber.value,
@@ -61,20 +88,15 @@ export class ContractsComponent implements OnInit {
       exp_year: form.expYear.value,
       cvc: form.cvc.value
     }, (status: number, response: any) => {
-      if (status === 200) {
+     if (status === 200) {
         let token = response.id;
         this.chargeCard(token);
       } else {
-        console.log(response.error.message);
+      console.log(response.error.message);
       }
     });
   }
-  chargeCard(token: string) {
-    const headers = new Headers({'token': token });
-    this.httpClient.post('http://localhost:8087/MITMVC/APIPayment/charge', {}, {headers: headers}) .subscribe(resp => {
-        console.log(resp);
-      })
-  }
+ 
 
   open(content: any): void {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
