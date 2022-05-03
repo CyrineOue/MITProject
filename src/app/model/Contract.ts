@@ -1,4 +1,4 @@
-//import { Payment } from "../model/payment";
+import { Payment } from "../model/payment";
 
 export class Contract {
      IDContract: string; 
@@ -13,6 +13,6 @@ export class Contract {
     Method: string;
     IDClientP: string;
     IDClientC: string;
-    //Payments : Payment
+    Payments : Payment;
     
     }

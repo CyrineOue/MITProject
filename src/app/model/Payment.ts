@@ -1,7 +1,7 @@
 import { Contract } from "./contract";
 
 export class Payment {
-    IDPayment: number;
+    IDPayment: string;
     PaymentDate: Date;
     PaidPremium: number;
     RemainingPremium: number;
