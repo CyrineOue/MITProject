@@ -40,5 +40,9 @@ addPayment(id : string , payment : Payment) : Observable <Payment>{
 editPayment(payment : Payment): Observable<Payment> {
   return this.httpClient.put<Payment>('http://localhost:8087/MITMVC/payment/modify-Payment', payment)
 }
-
+deletePayment(payment: Payment | number): Observable<Payment> {
+  const id = typeof payment=== 'number' ? payment: payment.IDPayment;
+  const url='http://localhost:8087/MITMVC/payment/delete-Payment/'+id;
+  return this.httpClient.delete<Payment>(url);
+  }
 }
