@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Contract } from 'src/app/model/Contract';
-
+import { HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
@@ -29,6 +29,18 @@ export class ContractService {
         const url='http://localhost:8087/MITMVC/Contract/remove-Contract/'+id;
         return this.httpClient.delete<Contract>(url);
         }
-        
-        
+        PaymentIntent() {
+          return this.httpClient.get('http://localhost:8087/MITMVC/APIPayment/createPayment');
+        }
+
+  //      
+  chargeCard(token: string) {
+    var myFormData = { token: 'token', amount: '1000' };
+    const headers = new HttpHeaders();
+  headers.append('Content-Type', 'application/json');
+      //HTTP POST REQUEST
+      return this.httpClient.post('http://localhost:8087/APIPayment/chargestripe',{ token: 'token', amount: '1000' },{headers:headers});
+
+
+    }
 }
