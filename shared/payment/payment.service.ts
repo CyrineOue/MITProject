@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Contract } from 'src/app/model/Contract';
 import { Payment } from 'src/app/model/Payment';
 
 
@@ -19,10 +20,13 @@ export class PaymentService {
   getPayments() : Observable <Payment[]>{
     return this.httpClient.get<Payment[]>('http://localhost:8087/MITMVC/payment/retrieve-all-payment');
     }
+    getPaymentByContrat( id : string): Observable <Payment[]>{
+      
+      return this.httpClient.get<Payment[]>('http://localhost:8087/MITMVC/payment/getPaymentByContrat/'+id);
+      }
 
+addPayment(id : string , payment : Payment) : Observable <Payment>{
 
-addPayment(payment : Payment) : Observable <Payment>{
-  const id = payment.copayment.IDContract;
   return this.httpClient.post<Payment>('http://localhost:8087/MITMVC/payment/add-payment/'+id,payment);
 }
 
