@@ -52,6 +52,11 @@ editPayment(payment :Payment){
 this.paymentService.editPayment(payment).subscribe;
 
 }
+deletePayment(idPayment : any){
+  this.paymentService.deletePayment(idPayment).subscribe(() => this.getPayments())
+}
+
+
 open(content: any): void {
   this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     this.closeResult = `Closed with: ${result}`;
