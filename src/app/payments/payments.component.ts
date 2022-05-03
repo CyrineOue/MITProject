@@ -10,6 +10,7 @@ import { PaymentService } from 'src/app/shared/payment/payment.service';
 })
 export class PaymentsComponent implements OnInit {
 listPayments : Payment[];
+listContractsbyid: Payment[];
 form : boolean = false;
   closeResult! : string;
   payment!:Payment;
@@ -17,12 +18,31 @@ form : boolean = false;
 
   ngOnInit(): void {
     this.getPayments();
+    this.payment={
+      IDPayment: null,
+      PaymentDate: null,
+      PaidPremium: null,
+      RemainingPremium: null,
+      RefundAmount: null,
+      Status: null,
+  
+      
+      copayment: null
+
+
+
+    }
   }
 getPayments(){
   this.paymentService.getPayments().subscribe(res => {console.log(res); this.listPayments= res});
 }
-addPayment(payment: Payment){
-this.paymentService.addPayment(payment).subscribe(() => { this.getPayments(); this.form=false;});
+
+getPaymentByContrat(id : string){
+  this.paymentService.getPaymentByContrat(id).subscribe(res => {console.log(res); this.listContractsbyid= res});
+}
+
+addPayment(id : string , payment: Payment ){
+this.paymentService.addPayment(id,payment).subscribe(() => { this.getPayments(); this.form=false;});
 
 }
 downloadPDF(){

@@ -1,6 +1,4 @@
-<!-- <mat-button-toggle>Toggle me!</mat-button-toggle>
- -->
- 
+
  <div class=" content">
     <div class=" row">
       <div class=" col-md-12">
@@ -48,29 +46,7 @@
 
                             </div>
                             <div>
-                            <form>
-                                <div class="modal-body">
-                                  <div class="row" class="col-md-5">
-                                    <input type="text" placeholder="ID Contract " [(ngModel)]="payment.copayment.idcontract"
-                                        [ngModelOptions]="{standalone : true}">
-                                </div>
-                                <div class="row" class="col-md-5">
                             
-                                            <input type="text" placeholder="Client" [(ngModel)]="payment.copayment.idclientC"
-                                                [ngModelOptions]="{standalone : true}">
-                                        </div>
-                                       
-                                    
-                                   
-                                </div>
-
-                                <div class="modal-footer">
-
-                                    <button type="button" class="btn btn-info"
-                                        (click)="modal.close('Save click')" (click)="cancel()">Cancel</button>
-                                    <button class="btn btn-success"(click)="editPayment(p)" (click)="modal.close('Save click')">Validate</button>
-                                </div>
-                            </form>
                         </div>
                         </ng-template>
            
@@ -79,7 +55,56 @@
             </tbody>
           </table>
                     
-                
+          
                       
                         
                       <button type="button" class="btn btn-outline-primary" (click)="downloadPDF()" onclick="window.location='http://localhost:8087/MITMVC/pdfexport/pdf/generate'">Download your payments</button>
+                      <div class=" col-md-12">
+                        <div class=" card card-plain">
+                          <div class=" card-header">
+                            <h4 class=" card-title">Assign and visualize your payments according to the installments chosen on your contract</h4>
+                           
+                          </div>
+                          
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <button class="btn btn-round btn-sm btn-success" (click)="open(mymodal1)">Add new Payment</button>
+                        <br><br>
+                        <ng-template #mymodal1 let-modal1>
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="modal-basic-title" >Enter your contract ID and your payment details</h4>
+                                <button type="button" class="close" aria-label="Close" (click)="modal1.dismiss('Cross click')">
+                                    <span aria-hidden="true" (click)="cancel()">×</span>
+                                </button>
+                  
+                            </div>
+                            <div class="center">
+                            <form>
+                              <div class="row" class="col-md-6">
+                                <input type="text" placeholder="Contract ID" [(ngModel)]="id"
+                                    [ngModelOptions]="{standalone : true}">
+                            </div>
+                                
+                                 <div class="row" class="col-md-6">
+                                            <input type="date" placeholder="Payment Date" [(ngModel)]="payment.paymentDate"
+                                                [ngModelOptions]="{standalone : true}">
+                                        </div>
+                                        <div class="row" class="col-md-6">
+                                            <input type="text" placeholder="Refund Amount" [(ngModel)]="payment.refundAmount"
+                                                [ngModelOptions]="{standalone : true}">
+                                        </div>
+                                        <div class="row" class="col-md-6">
+                                          <input type="text" placeholder="Paid Premium" [(ngModel)]="payment.paidPremium"
+                                              [ngModelOptions]="{standalone : true}">
+                                      </div>
+                                <br>
+                                        <button type="button" class="btn btn-success" (click)="addPayment(id, payment)" (click)="modal1.close('Save click')">Add</button> 
+                                <button type="button" class="btn btn-info" (click)="modal1.close('Save click')" >Cancel</button>
+                            </form>
+                        </div>
+                        </ng-template>
+                        
+                    </div>
+                  </div>
+                  </div>
