@@ -26,8 +26,13 @@ public interface CompanyClientService {
 	float scoreCompanyClient(Long id);
 	
 	
-	void CategoriseCompanyClient ();
+	void CategoriseCompanyClient (Long id);
 	
+	CompanyClient GetIdealCompanyClient();
+	
+	int countContracts(Long id);
+
+	//float MaxCompanyScore();
 	
 
 }

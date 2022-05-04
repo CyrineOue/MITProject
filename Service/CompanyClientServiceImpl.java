@@ -3,12 +3,13 @@ package tn.MITProject.services;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import tn.MITProject.entities.Area;
 import tn.MITProject.entities.CategoryClient;
 import tn.MITProject.entities.CompanyClient;
 import tn.MITProject.entities.Log;
+import tn.MITProject.entities.Product;
 import tn.MITProject.entities.Role;
 import tn.MITProject.repositories.CompanyClientRepository;
 import tn.MITProject.repositories.ContractRepository;
@@ -42,7 +44,12 @@ public class CompanyClientServiceImpl implements CompanyClientService {
 
 	@Override
 	public List<CompanyClient> retrieveAllCompanyClients() {
-		return (List<CompanyClient>) companyclientrepository.findAll();
+		List<CompanyClient> listC= (List<CompanyClient>) companyclientrepository.findAll(); 
+		for (CompanyClient c : listC) {
+			c.setScoreC(this.scoreCompanyClient(c.getIdClientC()));
+			this.CategoriseCompanyClient(c.getIdClientC());
+		}
+		return listC;
 	}
 
 	@Transactional
@@ -65,7 +72,9 @@ public class CompanyClientServiceImpl implements CompanyClientService {
 
 	@Override
 	public void deleteCompanyClient(Long id) {
-		companyclientrepository.deleteById(id);
+		CompanyClient pc = companyclientrepository.findById(id).orElse(null);
+		pc.setArchived(true);
+		companyclientrepository.save(pc);
 
 	}
 
@@ -87,25 +96,32 @@ public class CompanyClientServiceImpl implements CompanyClientService {
 
 	@Override
 	public CompanyClient retrieveCompanyClient(Long id) {
+		// System.out.println("TotalCompanyRefundAmount" + contractRepository.TotalCompanyRefundAmount(id));
 		return companyclientrepository.findById(id).orElse(null);
 	}
 	
 	@Override
 	public float EvaluateSeniority(Long idClient) {
+		if(companyclientrepository.existsById(idClient)) {
+		
 		CompanyClient c= companyclientrepository.findById(idClient).orElse(null);
-		LocalDate ld= c.getSbuscriptionDate();
-		long Seniority = ld.until(LocalDate.now(),ChronoUnit.YEARS);
-		if (Seniority>5) {
+		int thisYear = LocalDate.now().getYear();
+		int subYear =c.getSbuscriptionDate().getYear();
+		int Seniority  =thisYear-subYear;
+		if (Seniority>3) {
 			return 1; }
 		else {
-				if (Seniority>3)
+				if (Seniority>1)
 					return  0.5f;
 			}
-			
+		return 0;
+		}
+		System.out.println("Client introuvable");
 			return 0;
 	}
 	@Override
 	public float EvaluateCapital(Long idClient) {
+		if(companyclientrepository.existsById(idClient)) {
 		CompanyClient cp= companyclientrepository.findById(idClient).orElse(null);
 		long capital =cp.getCapital();
 		if ( capital >=20000 )
@@ -114,11 +130,13 @@ public class CompanyClientServiceImpl implements CompanyClientService {
 			if (capital>=5000)
 				return 0.5f;
 		return 0;
-		
+		}
+		return 0; 
 	}
 
 	@Override
 	public float EvaluateEmployeesNb(Long idClient) {
+		if(companyclientrepository.existsById(idClient)) {
 		CompanyClient cp= companyclientrepository.findById(idClient).orElse(null);
 		int EmplNb =cp.getEmployeesNb();
 		if ( EmplNb >=30 )
@@ -127,11 +145,15 @@ public class CompanyClientServiceImpl implements CompanyClientService {
 			if (EmplNb>=9)
 				return 0.5f;
 		return 0;
-	
+		}
+		return 0;
+
 	}
 	
 	@Override
 	public float EvaluateArea(Long idClient) {
+		if(companyclientrepository.existsById(idClient)) {
+
 		CompanyClient cp= companyclientrepository.findById(idClient).orElse(null);
 		Area ae =cp.getActivityArea();
 		if (ae==Area.TUNIS)
@@ -183,38 +205,92 @@ public class CompanyClientServiceImpl implements CompanyClientService {
 		if (ae==Area.JENDOUBA)
 			return 0.22f;
 		return 0;
+		}
+		return 0;
 	}
 
 	@Override
 	public float scoreCompanyClient(Long idClient) {
-		
-				return (float) (0.2 *  contractService.EvaluateContractsNb(idClient) 
-						+ 0.2 * contractService.EvaluateCompanyClaimsAmount(idClient)+ 0.1 * EvaluateSeniority(idClient) 
+		if(companyclientrepository.existsById(idClient)) {
+				return (float) (
+						+ 0.1 * EvaluateSeniority(idClient) 
 						+0.1*EvaluateCapital(idClient) +0.1* EvaluateEmployeesNb(idClient) 
 						+ 0.3* EvaluateArea(idClient) 
-						); 		 	
+						); 		
+				//+0.2 *  contractService.EvaluateCompanyContractsNb(idClient) 
+				//+0.2 * contractService.EvaluateCompanyClaimsAmount(idClient)
+
+		}
+		System.out.println("Le client n'existe pas");
+		return 0;
 	}
 
 	//@Scheduled(cron = "*/30 * * * * *" )
 	// @Scheduled(cron="0 8 1 * * *")
 	@Override
-	public void CategoriseCompanyClient() {
-	for (CompanyClient c : companyclientrepository.findAll() ) {
+	public void CategoriseCompanyClient(Long id) {
 		
+	if (companyclientrepository.existsById(id)){
+		CompanyClient c= companyclientrepository.findById(id).orElse(null);
+
 		if (scoreCompanyClient(c.getIdClientC())>0.5) {
 			c.setCategoryC(CategoryClient.TOP);
+			System.out.println("Le client compagnie "
+					+ c.getIdClientC() +" est de categorie TOP");
 		}
-		else 
+		else {
 			if(scoreCompanyClient(c.getIdClientC())>0.25) {
 				c.setCategoryC(CategoryClient.MEDIUM);
+				System.out.println("Le client compagnie "
+						+ c.getIdClientC() +" est de categorie MEDIUM");
 			}
-			else
+			else {
 				c.setCategoryC(CategoryClient.LOW);
+		System.out.println("Le client compagnie "
+				+ c.getIdClientC() +" est de categorie LOW");
+			}
+		
+		}
+	
 	}
+	else 
+		System.out.println("Client introuvable ");
+
 }
+	
 
+	@Override
+	public CompanyClient GetIdealCompanyClient() {
+	float maxScore=0;
+		for ( CompanyClient cc: companyclientrepository.findAll()) {
+			if (scoreCompanyClient(cc.getIdClientC())>maxScore) {
+				maxScore=scoreCompanyClient(cc.getIdClientC());
+				return cc;
+			}
+			
+		}
+		return null;
+	}
 
+	@Override
+	public int countContracts(Long id) {
+		CompanyClient cp= companyclientrepository.findById(id).orElse(null);
+		
+		int resultat =0;
+		System.out.println("resultat = "+resultat);
+		Log log=cp.getLogClientC();
+		
+		Set<Product> products = log.getProducts();
+		System.out.println("products = "+products);
+		for (Product p: products) {
+			p.getContracts();
+			System.out.println("contracts  = "+p.getContracts());
 
+			resultat+=p.getContracts().size();
+			System.out.println("resultat = "+resultat);
+		}
+		return resultat;
+	}
 	
 
 

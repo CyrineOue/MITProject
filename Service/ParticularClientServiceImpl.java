@@ -1,13 +1,14 @@
 package tn.MITProject.services;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ import tn.MITProject.entities.ParticularClient;
 
 import tn.MITProject.entities.Area;
 import tn.MITProject.entities.CategoryClient;
+import tn.MITProject.entities.CompanyClient;
+import tn.MITProject.entities.ParticularClient;
+import tn.MITProject.entities.ParticularClient;
 import tn.MITProject.entities.Log;
 import tn.MITProject.entities.Role;
 import tn.MITProject.repositories.ParticularClientRepository;
@@ -37,8 +41,12 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 
 	@Override
 	public List<ParticularClient> retrieveAllParticularClients() {
-		return (List<ParticularClient>) particularclientrepository.findAll();
-	}
+		List<ParticularClient> listC= (List<ParticularClient>) particularclientrepository.findAll(); 
+		for (ParticularClient c : listC) {
+			c.setScoreP(this.scoreParticularClient(c.getIdClientP()));
+			this.categoriseParticularClient(c.getIdClientP());
+		}
+		return listC;	}
 
 	@Transactional
 	public ParticularClient addParticularClient(ParticularClient p) {
@@ -86,21 +94,31 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 	
 	@Override
 	public float EvaluateSeniority(Long idClient) {
+		if(particularclientrepository.existsById(idClient)) {
+
 		ParticularClient pc =particularclientrepository.findById(idClient).orElse(null);
-		LocalDate ld= pc.getSbuscriptionDate();
-		long Seniority = ld.until(LocalDate.now(),ChronoUnit.YEARS);
-		if (Seniority>5) {
-			return 1; }
+		int thisYear = LocalDate.now().getYear();
+		int subYear =pc.getSbuscriptionDate().getYear();
+		int Seniority  =thisYear-subYear;
+		// long Seniority = ld.until(LocalDate.now(),ChronoUnit.YEARS);
+		System.out.println("Seniority: "+ Seniority);
+		if (Seniority>3) {
+			return 1;
+			}
 		else {
-				if (Seniority>3)
+				if (Seniority>1)
 					return  0.5f;
 			}
 			
 			return 0;
+		}
+		System.out.println("Client introuvable");
+		return 0;
 	}
 
 	@Override
 	public float EvaluateArea(Long idClient) {
+		if(particularclientrepository.existsById(idClient)) {
 		ParticularClient pc =particularclientrepository.findById(idClient).orElse(null);
 		Area ha =pc.getHomeAddress();
 		
@@ -152,12 +170,14 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 			return 0.22f;
 		if (ha==Area.JENDOUBA)
 			return 0.22f;
-		return 0;	}
+		}
+		return 0f;
+	}
 	
 	
 	@Override
 	public float EvaluateClaimsAmount(Long idClient) {
-		 
+		if(particularclientrepository.existsById(idClient)) { 
 		float rapport =contractRepository.TotalParticularRefundAmount(idClient)/contractRepository.TotalParticularCeillingAmount(idClient);
 		if (rapport<0.25f)
 			return 1f;
@@ -166,36 +186,62 @@ public class ParticularClientServiceImpl implements ParticularClientService {
 				return 0.5f;
 		}
 		return 0f;
-		
+		}
+		return 0f;
 	}
 	
 	@Override
 	public float scoreParticularClient(Long idClient) {
 		
 	 
-				
+		if (particularclientrepository.existsById(idClient))		{
 		return (float) (0.3* EvaluateArea(idClient) + 0.2 * EvaluateSeniority(idClient) 
-		+ 0.3 *EvaluateClaimsAmount(idClient) + 0.2 * contractService.EvaluateContractsNb(idClient));
+		);
+		//+ 0.3 *contractService.EvaluateParticularClaimsAmount(idClient) + 0.2 * contractService.EvaluateParticularContractsNb(idClient)
+	}
+		return 0;
 	}
 
-	// @Scheduled(cron = "*/30 * * * * *" )
+	//@Scheduled(cron = "*/30 * * * * *" )
 	// @Scheduled(cron="0 8 1 * * *")
 	@Override
-	public void categoriseParticularClient() {
-	for (ParticularClient c : particularclientrepository.findAll() ) {
-		
+	public void categoriseParticularClient(Long id) {
+		if (particularclientrepository.existsById(id)){
+			ParticularClient c= particularclientrepository.findById(id).orElse(null);
 		if (scoreParticularClient(c.getIdClientP())>0.5) {
 			c.setCategoryP(CategoryClient.TOP);
+			System.out.println("Le client particulier "
+					+ c.getIdClientP() +"est de categorie TOP");
 		}
-		else 
+		else {
 			if(scoreParticularClient(c.getIdClientP())>0.25) {
 				c.setCategoryP(CategoryClient.MEDIUM);
+				System.out.println("Le client particulier "
+						+ c.getIdClientP() +"est de categorie MEDIUM");
 			}
-			else
+			else {
 				c.setCategoryP(CategoryClient.LOW);
+				System.out.println("Le client particulier "
+						+ c.getIdClientP() +"est de categorie LOW");
+			}
+		}
 	}
-}
 	
+		else 
+			System.out.println("Client introuvable ");
+}
+	@Override
+	public ParticularClient GetIdealParticularClient() {
+	float maxScore=0;
+		for ( ParticularClient cc: particularclientrepository.findAll()) {
+			if (scoreParticularClient(cc.getIdClientP())>maxScore) {
+				maxScore=scoreParticularClient(cc.getIdClientP());
+				return cc;
+			}
+			
+		}
+		return null;
+	}
 
 
 }
