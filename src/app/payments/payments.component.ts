@@ -11,9 +11,13 @@ import { PaymentService } from 'src/app/shared/payment/payment.service';
 export class PaymentsComponent implements OnInit {
 listPayments : Payment[];
 listContractsbyid: Payment[];
+pourcentage : number;
 form : boolean = false;
   closeResult! : string;
   payment!:Payment;
+  isShow = false;
+ 
+ 
   constructor(private paymentService : PaymentService, private modalService :NgbModal) { }
 
   ngOnInit(): void {
@@ -32,6 +36,9 @@ form : boolean = false;
 
 
     }
+  }
+  toggleDisplay() {
+    this.isShow = !this.isShow;
   }
 getPayments(){
   this.paymentService.getPayments().subscribe(res => {console.log(res); this.listPayments= res});
@@ -55,7 +62,9 @@ this.paymentService.editPayment(payment).subscribe;
 deletePayment(idPayment : any){
   this.paymentService.deletePayment(idPayment).subscribe(() => this.getPayments())
 }
-
+pourcentageRemainingAmount(StartDate: Date, EndDate:Date){
+  this.paymentService.pourcentageRemainingAmount(StartDate,EndDate).subscribe(res => {console.log(res); this.pourcentage=res});
+}
 
 open(content: any): void {
   this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {

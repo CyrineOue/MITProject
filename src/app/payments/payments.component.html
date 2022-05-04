@@ -84,6 +84,7 @@
                         </ng-template>
                         <button type="button" class="btn btn-outline-danger"
                         (click)="deletePayment(p.idpayment)">Delete</button>
+                        
                     </td>
                 </tr>
             </tbody>
@@ -142,3 +143,51 @@
                     </div>
                   </div>
                   </div>
+                
+                  <button type="button" class="btn btn-outline-primary"
+                        (click)="open(mymodal)">Remaining premium percentage before the end of the contract</button>
+                    <ng-template #mymodal let-modal>
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modal-basic-title">View remaining percentage premium for my contract </h4>
+                            <button type="button" class="close" aria-label="Close"
+                                (click)="modal.dismiss('Cross click')">
+                                <span aria-hidden="true" (click)="cancel()">×</span>
+                              
+                            </button>
+
+                        </div>
+                        
+                        <div>
+                        <form>
+                            <div class="modal-body">
+              
+                            
+                                   <div class="row" class="col-md-5">
+                                        <input type="date" placeholder="startDate" [(ngModel)]="startDate"
+                                            [ngModelOptions]="{standalone : true}">
+                                    </div>
+                                    <div class="row" class="col-md-5">
+                                      <input type="date" placeholder="startDate" [(ngModel)]="endDate"
+                                          [ngModelOptions]="{standalone : true}">
+                                  </div>
+                                    
+                                
+                               
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn btn-info"
+                                    (click)="modal.close('Save click')" (click)="cancel()">Cancel</button>
+                                <button class="btn btn-success"(click)="pourcentageRemainingAmount(startDate,endDate)" (click)="modal.close('Save click')" (click) = toggleDisplay()>Validate</button>
+                           
+                              </div>
+                        </form>
+                        
+                            </div>
+                           
+                        </ng-template>
+                        <div *ngIf = "isShow">
+                        <p><span>"{{pourcentage}}" %is the <i>remaining percentage</i> amount between the start date of your contract and the date of the payment</span></p>
+                      </div>
+                       
