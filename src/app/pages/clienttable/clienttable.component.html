@@ -1,0 +1,345 @@
+<!-- Company client Manage -->
+<div class=" content">
+  
+  <button (click)="open(mymodal1)" type="button" class="btn btn-primary"> Add Company </button>
+  <ng-template #mymodal1 let-modal1>
+      <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Add Company Client</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal1.dismiss('Cross click')">
+              <span aria-hidden="true" (click)="cancel()">×</span>
+
+          </button>
+
+      </div>
+      <div>
+          <form>
+              <div class="modal-body">
+                <!--add client form -->
+                  <div class="row" class="col-md-5" >
+                      <label>Brand </label>
+                      <input type="text" [(ngModel)]="clientC.brand" />
+                  </div>
+                  <div class="row" class="col-md-5">
+                      <label>Activiry area</label>
+                      <input type="text" [(ngModel)]="clientC.activityArea" />
+                  </div>
+                  <div class="row" class="col-md-5">
+                      <label>Password</label>
+                      <input type="password" [(ngModel)]="clientC.logClientC.password" />
+                  </div>
+                  <div class="row" class="col-md-5">
+                      <label>E-mail</label>
+                      <input type="email" [(ngModel)]="clientC.logClientC.email" />
+                  </div>
+                  <div class="row" class="col-md-5">
+                    <label>Sinisters Nb</label>
+                    <input type="number" [(ngModel)]="clientC.nbDeclaredSinistersC" />
+                </div>
+                <div class="row" class="col-md-5">
+                    <label>Employees nb</label>
+                    <input type="text" [(ngModel)]="clientC.employeesNb" />
+                </div>
+               
+              </div>
+
+              <div class="modal-footer">
+
+                  <button type="button" class="btn btn-info" (click)="modal1.close('Save click')"
+                      (click)="cancel()">Cancel</button>
+                  <button class="btn btn-success" (click)="addCompanyClient(clientC)"
+                      (click)="modal1.close('Save click')">Validate</button>
+              </div>
+          </form>
+      </div>
+  </ng-template>
+  <div class=" row">
+       <!-- client table display -->
+      <div class=" col-md-12">
+          <div class=" card">
+              <div class=" card-header">
+                  <h4 class=" card-title">Company Clients' Table</h4>
+              </div>
+              <div class=" card-body">
+                  <div class=" table-responsive">
+                      <table class=" table tablesorter" >
+                          <thead class=" text-primary">
+                              <tr>
+                                  <th>Brand</th>
+                                  <th>E-mail</th> 
+                                  <th>Activity area</th>
+                                  <th>Employees' Nb</th>
+                                  <th>Capital</th>
+                                  <th>Sinisters</th>
+                                  <th>Active</th>
+                                  <th>Category</th>
+                                  <th>Score</th>
+                                  <th></th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let a of listCompanyClients">
+                                  <td>{{a.brand}}</td>
+                                  <td>{{a.logClientC.email}}</td>
+                                  <td>{{a.activityArea}}</td>
+                                 <td>{{a.employeesNb}}</td> 
+                                 <td>{{a.capital}}</td>
+                                <td>{{a.nbDeclaredSinistersC}}</td>
+                                 <td *ngIf="a.archived==true">No</td>
+                                 <td *ngIf="a.archived==false">Yes</td>  
+                                 <td> {{a.categoryC}}  </td>
+                                 <td> {{a.scoreC}}</td>
+                                  <td>
+                                        <button (click)="deleteCompanyClient(a.idClientC)" type="button"
+                                        class="btn btn-warning">ARCHIVE </button>
+
+
+                                        <button (click)="open(mymodal)" type="button"
+                                          class="btn btn-primary">EDIT </button>
+                                        
+                                        <ng-template #mymodal let-modal>
+                                          <div class="modal-header">
+                                              <h4 class="modal-title" id="modal-basic-title">Edit </h4>
+                                              <button type="button" class="close" aria-label="Close"
+                                                  (click)="modal.dismiss('Cross click')">
+                                                  <span aria-hidden="true" (click)="cancel()">×</span>
+
+                                              </button>
+
+                                          </div>
+
+                                          <div>
+                                              <form>
+                                                  <div class="modal-body">
+
+                                                      <div class="row" class="col-md-5">
+                                                          <label>Brand</label>
+                                                          <input type="text" [(ngModel)]="a.brand"
+                                                              [ngModelOptions]="{standalone : true}" />
+                                                      </div>
+                                                      <!--
+                                                      <div class="row" class="col-md-5">
+                                                          <label>E-mail</label>
+                                                          <input type="email" [(ngModel)]="a.logClientC.email"
+                                                              [ngModelOptions]="{standalone : true}" />
+                                                      </div>
+                                                      -->
+                                                      <div class="row" class="col-md-5">
+                                                          <label>Capital</label>
+                                                          <input type="number" [(ngModel)]="a.capital"
+                                                              [ngModelOptions]="{standalone : true}" />
+                                                      </div>
+                                                  </div>
+
+                                                  <div class="modal-footer">
+
+                                                      <button type="button" class="btn btn-info"
+                                                          (click)="modal.close('Save click')"
+                                                          (click)="cancel()">Cancel</button>
+                                                      <button class="btn btn-success" (click)="editCompanyClient(a)"
+                                                          (click)="modal.close('Save click')">Validate</button>
+                                                  </div>
+
+                                              </form>
+                                          </div>
+                      
+                                      </ng-template>
+                                      
+                                      
+                               
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<h4></h4>
+<div class=" col-md-12">
+    <div class=" card">
+        <div class=" row">
+            <div class=" col-md-6 ml-auto mr-auto text-center">
+              <h2 class=" card-title">Ideal Company Client </h2>
+                <div class=" col-md-4" >
+                <button class=" btn btn-danger btn-block" >Ideal Client</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+<!-- Particular client Manage -->
+<div class=" content">
+    <button (click)="open(mymodal2)" type="button" class="btn btn-primary">Add a particular</button>
+    <ng-template #mymodal2 let-modal2>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Add a particular client</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal2.dismiss('Cross click')">
+                <span aria-hidden="true" (click)="cancel()">×</span>
+
+            </button>
+
+        </div>
+        <div>
+            <form>
+                <div class="modal-body">
+
+                    <div class="row" class="col-md-5">
+                        <label>First Name</label>
+                        <input type="text" [(ngModel)]="clientP.firstName" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>Last Name</label>
+                        <input type="text" [(ngModel)]="clientP.lastName" />
+                    </div>
+                   
+                    <div class="row" class="col-md-5">
+                        <label>Address</label>
+                        <input type="text" [(ngModel)]="clientP.homeAddress" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>Profession</label>
+                        <input type="text" [(ngModel)]="clientP.profession" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>CIN</label>
+                        <input type="number" [(ngModel)]="clientP.cin" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>Birth date</label>
+                        <input type="date" [(ngModel)]="clientP.birthDate" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>Phone number</label>
+                        <input type="number" [(ngModel)]="clientP.phoneNo" />
+                    </div>
+                    <label>LOG </label>
+                    <div class="row" class="col-md-5">
+                        <label>E-Mail</label>
+                        <input type="email" [(ngModel)]="clientP.logClientP.email" />
+                    </div>
+                    <div class="row" class="col-md-5">
+                        <label>Password</label>
+                        <input type="password" [(ngModel)]="clientP.logClientP.password" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-info" (click)="modal2.close('Save click')"
+                        (click)="cancel()">Cancel</button>
+                    <button class="btn btn-success" (click)="addParticularClient(clientP)"
+                        (click)="modal2.close('Save click')">Validate</button>
+                </div>
+            </form>
+        </div>
+    </ng-template>
+   
+    <div class=" row">
+        <div class=" col-md-12">
+            <div class=" card">
+                <div class=" card-header">
+                    <h4 class=" card-title">Particular Clients' Table</h4>
+                </div>
+                <div class=" card-body">
+                    <div class=" table-responsive">
+                        <table class=" table tablesorter" >
+                            <thead class=" text-primary">
+                                <tr>
+                                    <th>CIN</th>
+                                    <th>Name</th>
+                                    <th>Last Name</th>
+                                    <th>E-Mail</th>
+                                    <th>Phone</th>
+                                    <th>Gender</th>
+                                    <th>Profession</th>
+                                    <th>Birth date</th>
+                                    <th>Address</th>
+                                    <th>Contracts Nb</th>
+                                    <th>Sinisters</th>
+                                    <th> Score </th>
+                                    <th>Category</th>
+                                    <th>Active</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr *ngFor='let p of listParticularClients'>
+                                    <td>{{p.cin}}</td>
+                                    <td>{{p.firstName}}</td>
+                                    <td>{{p.lastName}}</td>
+                                    <td>{{p.logClientP.email}}</td>
+                                    <td>{{p.phoneNo}}</td>
+                                    <td>{{p.gender}}</td>
+                                    <td>{{p.profession}}</td>
+                                    <td>{{p.birthDate}}</td>
+                                    <td>{{p.homeAddress}}</td>
+                                    <td>{{p.contractsNb}}</td>
+                                    <td>{{p.nbDeclaredSinistersP}}</td>
+                                    <td>{{p.scoreP}}</td>
+                                    <td>{{p.categoryP}}</td>
+                                    <td *ngIf="p.archived==true">No</td>
+                                    <td *ngIf="p.archived==false">Yes</td>  
+                                    <td><button (click)="open(mymodal)" type="button"
+                                        class="btn btn-primary"> EDIT</button>
+                                        <ng-template #mymodal let-modal>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="modal-basic-title">Edit a particular</h4>
+                                            <button type="button" class="close" aria-label="Close"
+                                                (click)="modal.dismiss('Cross click')">
+                                                <span aria-hidden="true" (click)="cancel()">×</span>
+                                        
+                                            </button>
+                                        
+                                        </div>
+                                        <div>
+                                            <form>
+                                                <div class="modal-body">
+
+                                                    <div class="row" class="col-md-5">
+                                                        <label>First Name</label>
+                                                        <input type="text" [(ngModel)]="p.firstName"
+                                                            [ngModelOptions]="{standalone : true}" />
+                                                    </div>
+                                                    <div class="row" class="col-md-5">
+                                                        <label>E-mail</label>
+                                                        <input type="email" [(ngModel)]="a.logClientC.email"
+                                                            [ngModelOptions]="{standalone : true}" />
+                                                    </div>
+                                                    
+                                                    <div class="row" class="col-md-5">
+                                                        <label>Sexe</label>
+                                                        <input type="number" [(ngModel)]="p.gender"
+                                                            [ngModelOptions]="{standalone : true}" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button type="button" class="btn btn-info"
+                                                        (click)="modal.close('Save click')"
+                                                        (click)="cancel()">Cancel</button>
+                                                    <button class="btn btn-success" (click)="editCompanyClient(a)"
+                                                        (click)="modal.close('Save click')">Validate</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                     </ng-template>
+                                        <button (click)="deleteAgent(a.idagent)" type="button"
+                                        class="btn btn-warning">Archive</button>
+                                        </td>
+                                        </tr>
+                                        </tbody>
+                                        </table>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+
+                                    
+                                      
