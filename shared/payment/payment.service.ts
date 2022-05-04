@@ -45,4 +45,9 @@ deletePayment(payment: Payment | number): Observable<Payment> {
   const url='http://localhost:8087/MITMVC/payment/delete-Payment/'+id;
   return this.httpClient.delete<Payment>(url);
   }
+
+
+  pourcentageRemainingAmount(StartDate: Date, EndDate:Date){
+    return this.httpClient.get<number>('http://localhost:8087/MITMVC/payment/get-pourcentage/'+StartDate+'/'+EndDate);
+  }
 }
