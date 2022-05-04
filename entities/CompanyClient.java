@@ -44,7 +44,9 @@ public class CompanyClient implements Serializable{
 	private boolean archived=false;
 	private final LocalDate sbuscriptionDate = LocalDate.now();
 	private CategoryClient categoryC;
+	private float scoreC;
 	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
+	//@JsonIgnore
 	private Log logClientC;
 	
 		
@@ -126,7 +128,6 @@ public class CompanyClient implements Serializable{
 
 	public CompanyClient() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public CompanyClient(long idClientC, String brand, Area activityArea, Date creationDate, int employeesNb,
@@ -149,6 +150,14 @@ public class CompanyClient implements Serializable{
 
 	public void setCategoryC(CategoryClient categoryC) {
 		this.categoryC = categoryC;
+	}
+
+	public float getScoreC() {
+		return scoreC;
+	}
+
+	public void setScoreC(float scoreC) {
+		this.scoreC = scoreC;
 	}
 	
 
