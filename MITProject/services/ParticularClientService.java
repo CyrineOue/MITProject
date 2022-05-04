@@ -22,6 +22,10 @@ public interface ParticularClientService {
 	
 	float scoreParticularClient(Long idClient);
 	
-	int CategoriyParticularClient (Long idClient );
+	float EvaluateClaimsAmount(Long idClient);
+
+	void categoriseParticularClient(Long idClient);
+
+	ParticularClient GetIdealParticularClient();
 
 }

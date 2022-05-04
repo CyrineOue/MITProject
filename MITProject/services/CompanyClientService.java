@@ -1,7 +1,6 @@
 package tn.MITProject.services;
 
 import java.util.List;
-
 import tn.MITProject.entities.CompanyClient;
 
 public interface CompanyClientService {
@@ -26,7 +25,14 @@ public interface CompanyClientService {
 	
 	float scoreCompanyClient(Long id);
 	
-	int CategoriyCompanyClient(Long idClient); 
+	
+	void CategoriseCompanyClient (Long id);
+	
+	CompanyClient GetIdealCompanyClient();
+	
+	int countContracts(Long id);
+
+	//float MaxCompanyScore();
 	
 
 }
