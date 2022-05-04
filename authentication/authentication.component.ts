@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Role } from '../model/Role';
 import { TokenStorageService } from '../shared/user/token-storage.service';
 import { UserService } from '../shared/user/user.service';
+//import * as jwt_decode from "jwt-decode";
+import jwt_decode from 'jwt-decode';
 
 @Component({
   selector: 'app-authentication',
@@ -25,12 +27,22 @@ export class AuthenticationComponent implements OnInit {
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
-  role: Role;
+  private roles: string[];
+  authority:string='';
+  sub:string=null;
+  token: string;
   @Input() error: string | null;
   constructor(private router: Router, private userService: UserService, public toastr: ToastrService,private tokenStorage: TokenStorageService) { }
   //username = ''
   //password = ''
   invalidLogin = false
+  getDecodedAccessToken(token: string): any {
+    try {
+      return jwt_decode(token);
+    } catch(Error) {
+      return null;
+    }
+  }
   
   
 
@@ -41,7 +53,9 @@ export class AuthenticationComponent implements OnInit {
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
-      this.role = this.tokenStorage.getUser().role;
+      this.token=sessionStorage.getItem('auth-user')
+      const tokenInfo = this.getDecodedAccessToken(this.token);
+      this.roles[0] = tokenInfo.roles[0];
     }
   }
 
@@ -66,21 +80,40 @@ export class AuthenticationComponent implements OnInit {
       data => {
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);
-        const tokenInfo = this.tokenStorage.getUser();
-        console.log(tokenInfo.role);
-        if (tokenInfo.role === "ADMIN") {  
+        //const token = this.tokenStorage.getUser();
+        //const token = localStorage.getItem("token");
+        //localStorage.setItem('token', data.body);
+          /*A chaque fois on besoin du token */
+          this.token=sessionStorage.getItem('auth-user');
+          const tokenInfo = this.getDecodedAccessToken(this.token);
+        //const tokenInfo = this.getDecodedAccessToken(token);
+        console.log(this.token);
+        console.log(tokenInfo);
+        if (tokenInfo.roles[0].authority==='ROLE_ADMIN') {  
           //this.userService.admin = true;
           this.router.navigate(['log/admin']);
           this.isLoggedIn = true;
           this.invalidLogin = false
-        }/*
-        else if (tokenInfo.role === "AGENT")  {
+        }
+        else if (tokenInfo.roles[0].authority==='ROLE_AGENT')  {
           //this.userService.agent = true;
           this.router.navigate(['log/agent']);
           this.isLoggedIn = true;
           this.invalidLogin = false
+        }
+        else if (tokenInfo.roles[0].authority==='ROLE_EXPERT')  {
+          //this.userService.agent = true;
+          this.router.navigate(['log/expert']);
+          this.isLoggedIn = true;
+          this.invalidLogin = false
+        }
+        else if (tokenInfo.roles[0].authority==='ROLE_COMPANYCLIENT' || tokenInfo.roles[0].authority==='ROLE_ParticularCLIENT' )  {
+          //this.userService.agent = true;
+          this.router.navigate(['log/client']);
+          this.isLoggedIn = true;
+          this.invalidLogin = false
+        }
 
-        }*/
         //this.router.navigate(['log/admin'])
         //this.invalidLogin = false
       },
