@@ -40,7 +40,8 @@ public class ParticularClient implements Serializable{
 	private int nbDeclaredSinistersP;
 	private boolean archived=false;
 	private final LocalDate sbuscriptionDate = LocalDate.now();
-	
+	private CategoryClient CategoryP;
+	private float ScoreP;
 	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
 	private Log logClientP;
 	
@@ -147,7 +148,18 @@ public class ParticularClient implements Serializable{
 		this.archived = archived;
 		this.logClientP = logClientP;
 	}
-	
+	public CategoryClient getCategoryP() {
+		return CategoryP;
+	}
+	public void setCategoryP(CategoryClient categoryP) {
+		CategoryP = categoryP;
+	}
+	public float getScoreP() {
+		return ScoreP;
+	}
+	public void setScoreP(float scoreP) {
+		ScoreP = scoreP;
+	}
 	
 
 }
