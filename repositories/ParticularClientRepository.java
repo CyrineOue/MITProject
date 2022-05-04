@@ -9,7 +9,8 @@ import tn.MITProject.entities.ParticularClient;
 
 @Repository
 public interface ParticularClientRepository extends CrudRepository<ParticularClient, Long> {
+	/*
 	@Query("SELECT p FROM ParticularClient p WHERE p.CategoriyParticularClient(p.idClientP)= :cat ")
 	ParticularClient IdealParticularClient(@Param("cat") int cat);
-
+*/
 }

@@ -9,9 +9,10 @@ import tn.MITProject.entities.CompanyClient;
 
 @Repository
 public interface CompanyClientRepository extends CrudRepository<CompanyClient, Long> {
-	
-	@Query("SELECT c FROM CompanyClient c WHERE c.CategoriyCompanyClient(c.idClientC)= :cat ")
-	CompanyClient IdealCompanyClient(@Param("cat") int cat); 
+	/*
+	@Query("SELECT count(n) FROM CompanyClient c join c.logClientC l join l.products p join p.contracts n WHERE c.idClientC= :idClientC ")
+	int CountCompanyClientContracts(@Param("idClientC") Long idClientC);
+	*/
 
 
 }
