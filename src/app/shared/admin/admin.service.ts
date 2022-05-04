@@ -25,4 +25,8 @@ export class AdminService {
   addAdmin(admin:Admin){
     return this.http.post<Admin>("http://localhost:8081/mit/admin/add-admin",admin);
     }
+
+    getConnectedAdmin() : Observable<Admin>{
+      return this.http.get<Admin>("http://localhost:8081/mit/admin/retrieve-connected-admin");
+    }
 }

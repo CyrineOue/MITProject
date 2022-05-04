@@ -12,7 +12,7 @@ export class TokenStorageService {
   signOut(): void {
     window.sessionStorage.clear();
   }
-  public saveToken(token: string): void {
+  public saveToken(token: string): void { 1 
     window.sessionStorage.removeItem(TOKEN_KEY);
     window.sessionStorage.setItem(TOKEN_KEY, token);
   }
@@ -24,10 +24,11 @@ export class TokenStorageService {
     window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
   }
   public getUser(): any {
-    const user = window.sessionStorage.getItem(USER_KEY);
-    if (user) {
+    //const user = window.sessionStorage.getItem(USER_KEY);
+    /*if (user) {
       return JSON.parse(user);
     }
-    return {};
+    return {};*/
+    return JSON.parse(sessionStorage.getItem(USER_KEY));
   }
 }
