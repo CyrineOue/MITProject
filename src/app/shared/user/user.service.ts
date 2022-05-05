@@ -53,4 +53,25 @@ export class UserService {
   logOut() {
     sessionStorage.removeItem("email");
   }
+
+  getConnectedUser(email: string) : Observable<User>{
+    return this.httpClient.get<User>("http://localhost:8081/mit/log/users/"+email);
+  }
+
+  editAdminProfile(user: User){
+    return this.httpClient.put<User>("http://localhost:8081/mit/log/modify-logadmin",user);
+  }
+
+  editExpertProfile(user: User){
+    return this.httpClient.put<User>("http://localhost:8081/mit/log/modify-logexpert",user);
+  }
+
+  editAgentProfile(user: User){
+    return this.httpClient.put<User>("http://localhost:8081/mit/log/modify-logagent",user);
+  }
+
+  editCompanyProfile(user: User){
+    return this.httpClient.put<User>("http://localhost:8081/mit/log/modify-logcompany",user);
+  }
+
 }
