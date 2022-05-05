@@ -1,3 +1,3 @@
 export enum Role{
-    ADMIN, AGENT
+    ADMIN, AGENT, EXPERT, CompanyClient, PARTICULARCLIENT
 }
