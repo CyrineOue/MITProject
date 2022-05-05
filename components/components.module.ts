@@ -9,10 +9,11 @@ import { SidebarComponent } from "./sidebar/sidebar.component";
 import { SidebarclientComponent } from './sidebarclient/sidebarclient.component';
 import { SidebaragentComponent } from './sidebaragent/sidebaragent.component';
 import { SidebarexpertComponent } from './sidebarexpert/sidebarexpert.component';
+import { SidebarproductComponent } from './sidebarproduct/sidebarproduct.component';
 
 @NgModule({
   imports: [CommonModule, RouterModule, NgbModule],
-  declarations: [FooterComponent, NavbarComponent, SidebarComponent, SidebarclientComponent, SidebaragentComponent, SidebarexpertComponent],
-  exports: [FooterComponent, NavbarComponent, SidebarComponent, SidebarclientComponent, SidebaragentComponent, SidebarexpertComponent]
+  declarations: [FooterComponent, NavbarComponent, SidebarComponent, SidebarclientComponent, SidebaragentComponent, SidebarexpertComponent, SidebarproductComponent],
+  exports: [FooterComponent, NavbarComponent, SidebarComponent, SidebarclientComponent, SidebaragentComponent, SidebarexpertComponent, SidebarproductComponent]
 })
 export class ComponentsModule {}
